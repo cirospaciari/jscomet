@@ -8,7 +8,7 @@ Project types available: app, console, library. (Desktop and web coming soon)
 
 Command line:
 
-  version                                  show JSComet version
+        version                                  show JSComet version
         clean                                    clean all projects
         clean %PROJECT_NAME%                     clean a project
         build %PROJECT_NAME%                     build a project
