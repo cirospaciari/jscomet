@@ -1,0 +1,16 @@
+{
+  "Projects": [],
+  "Options":{
+	  "translateModule": true,
+	  "translateExports": true,
+	  "translateImports": true,
+	  "translateClass": true,
+	  "translateStringTemplates": true,
+	  "translateArrowFunctions": true,
+	  "translateLetAndConst": true,
+	  "translateFunctions": true,
+	  "translateTypedArrays": true,
+	  "translateAsyncFunctions" : true,
+	  "translateCodeAfterImport": false
+ }
+}

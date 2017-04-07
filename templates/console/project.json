@@ -1,0 +1,8 @@
+{
+   "Name": "{ProjectName}",
+   "Source": "{ProjectName}/src",
+   "Bin": "{ProjectName}/bin",
+   "IgnorePathsOnTranslate": ["libs", "node_modules"],
+   "Type": "console",
+   "MainFile": "main.js"
+}

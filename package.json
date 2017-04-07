@@ -1,0 +1,28 @@
+{
+  "author": {
+    "name": "Ciro César Martins Spaciari Jr"
+  },
+  "contributors": [
+    {
+      "name": "Ciro César Martins Spaciari Jr",
+      "email": "ciro.spaciari@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "name": "jscomet",
+  "version": "0.0.1",
+  "description": "JSComet create apps with OOP (private functions, static properties etc)",
+  "bin": {
+    "jscomet": "./jscomet"
+  },
+  "main" : "./jscomet.js",
+  "preferGlobal": "true",
+  "dependencies": {
+    "ncp": "^2.0.0",
+    "glob": "^7.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://cirospaciari@gitlab.com/cirospaciari/jscomet.git"
+  }
+}
