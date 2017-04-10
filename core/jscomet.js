@@ -157,8 +157,8 @@ var JSComet = function () {
     }
     this.options = defaultOptions();
     this.wrapSuper = function(instance){
-  		var __super__ = Object.create(null);
-  		var __superDescriptions__ = Object.create(null);
+  		var __super__ = {};
+  		var __superDescriptions__ = {};
   		var props = Object.getOwnPropertyNames(instance);
 
           for (var i = 0; i < props.length; i++) {
@@ -1540,7 +1540,7 @@ var JSComet = function () {
     var compileType = function (code, type) {
 
         var script = 'var ' + type.name + ' = (function(' + ((type.base != null) ? type.base : '') + '){\n"use strict";\n';
-        script += "\nvar ___privateStatic___ = Object.create(null);\n";
+        script += "\nvar ___privateStatic___ = {};\n";
 
         script += 'function ' + type.name + '(';
 
@@ -1668,7 +1668,7 @@ var JSComet = function () {
         //class check
         script += '\tJSComet.checkClass(this, ' + type.name + ');\n';
 
-        script += '\tvar ___private___ = Object.create(null);\n';
+        script += '\tvar ___private___ = {};\n';
         script += '\tvar ___self___ = this;\n';
         if (type.base != null)
         {
@@ -3228,4 +3228,7 @@ var require = (typeof require == "undefined") ? function require(source, transla
 var module = (typeof module == "undefined") ? { exports: {} } : module;
 var z____memoryImport = z____memoryImport || {};
 module.exports["default"] = JSComet;
-global.JSComet = JSComet;
+if(typeof global != "undefined")
+	global.JSComet = JSComet;
+else if(typeof window != "undefined")
+	window.JSComet = JSComet;

@@ -1,3 +1,7 @@
+Known Issues:
+    * Performance and code generated need to be improved
+    * Async and await is buggy and poorly developed (for testing purposes only).
+
 How install:
 
 npm install -g jscomet
