@@ -387,9 +387,27 @@ var JSComet = function () {
         }
     };
     var especialTypes = ["string", "number", "boolean", "object", "function", "symbol"];
+	
     var especialTypesObject = ["String", "Number", "Boolean", "Object", "Function", "Symbol"];
     var especialTypesNullable = [true, true, false, true, true, true];
     var especialLineEnds = ["var", "let", "const", "function", "class", "import", "export", "private", "public", "static"];
+	var typesDefaultValues = {
+		"bit": 0,
+        "sbyte": 0,
+        "byte": 0,
+        "short": 0,
+        "ushort": 0,
+        "int": 0,
+        "uint": 0,
+        "long": 0,
+        "ulong": 0,
+		"float": "0.00",
+		"double": "0.00",
+		"number": 0,
+		"any": "undefined",
+		"Boolean": false,
+		"boolean": false,
+	}
     var especialIntValidation = {
         "bit": { min: 0, max: 1 },
         "sbyte": { min: -128, max: 127 },
@@ -1342,7 +1360,7 @@ var JSComet = function () {
             else
                 newBody += "\n        " + method.value.body;
 
-            newBody += "}).apply(this, arguments);\n";
+            newBody += "}).apply(typeof ___self___ == 'undefined' ? this : ___self___, arguments);\n";
             var typeName = type ? type.name : null;
             var returnValidation = getFullValidationForTypes(returnTypes, "z____return", false, true, method.name, typeName);
             if (returnValidation)
@@ -1493,7 +1511,7 @@ var JSComet = function () {
                     codeParts[i].value = replaceSuper(codeParts[i].value, type, method);
                 if (privates.length > 0) {
                     //substitui privados
-                    codeParts[i].value = codeParts[i].value.replace(/([\s]?this[\s]?\.)([^0-9][\w]*[\s]*)(\(|[\s]|\;|\.|\)|\[)/gi, function ($0, $1, $2, $3) {
+                    codeParts[i].value = codeParts[i].value.replace(/([\s]?this[\s]?\.)([^0-9][\w]*[\s]*)(\(|[\s|+|-|*|\/|~|^|,]|\;|\.|\)|\[)/gi, function ($0, $1, $2, $3) {
                         var name = trim($2);
                         if (indexOf(privates, name) == -1)
                             return $0;
@@ -1502,7 +1520,7 @@ var JSComet = function () {
                 }
                 if (privateStatics.length > 0) {
                     //substitui privados statics
-                    var regex = new RegExp("([\\s]?" + escapeRegExp(type.name) + "[\\s]?\\.)([^0-9][\\w]*[\\s]*)(\\(|[\\s]|\\;|\\.|\\)|\\[)", "gi");
+                    var regex = new RegExp("([\\s]?" + escapeRegExp(type.name) + "[\\s]?\\.)([^0-9][\w]*[\s]*)(\(|[\s|+|-|*|\/|~|^|,]|\;|\.|\)|\[)", "gi");
                     codeParts[i].value = codeParts[i].value.replace(regex, function ($0, $1, $2, $3) {
                         var name = trim($2);
                         if (indexOf(privateStatics, name) == -1)
@@ -1539,6 +1557,15 @@ var JSComet = function () {
             }
             else {
                 var filteredContext = field.isStatic ? type.name : "this";
+				
+				if(field.value == "" || field.value == "undefined"){
+					var defaultValue = typesDefaultValues[trim(nameAndType[1])]
+					if(defaultValue == undefined){
+						defaultValue = "null";
+					}
+					field.value = defaultValue;
+				}
+				
                 filteredFields.push({
                     name: generatedPropertyFieldPrefix + nameAndType[0],
                     modifier: "private",
@@ -1652,7 +1679,7 @@ var JSComet = function () {
         if (type.base != null)
         {
           //super call (can only pass parameters of the constructors)
-          script += '\n\t\t'+ type.base +'.apply(this, arguments);';
+          script += '\n\t\t'+ type.base +'.apply(___self___, arguments);';
           //make super obj
           script += '\n\t\t___super___ = JSComet.wrapSuper(___self___);';
         }
@@ -1746,8 +1773,8 @@ var JSComet = function () {
                     var defaultSet = "";
                     getFunc = "(function " + prop.get.name + "(){" + replacePrivatesAndSuper(prop.get.value.body, type, null, prop.get.isStatic) + "})";
                     setFunc = "(function " + prop.set.name + "(" + setParameter + "){\n" + validation + "\n" + replacePrivatesAndSuper(prop.set.value.body, type, null, prop.set.isStatic) + " })";
-                    getFunc = "(function(){ var z____return = " + getFunc + ".apply(this, arguments);\n " + returnValidation + " return z____return;})";
-                    setFunc = "(function(){ return " + setFunc + ".apply(this, arguments);})";
+                    getFunc = "(function(){ var z____return = " + getFunc + ".apply(___self___, arguments);\n " + returnValidation + " return z____return;})";
+                    setFunc = "(function(){ return " + setFunc + ".apply(___self___, arguments);})";
 
                     var privateName = prop.get.isStatic ? '___privateStatic___' : '___private___';
                     var publicName = prop.get.isStatic ? type.name : '___self___';
@@ -1886,7 +1913,7 @@ var JSComet = function () {
         script += replacePrivatesAndSuper(constructor.value.body, type, 'constructor', false); //Constructor
         script += '\n\t\t}).apply(___self___, arguments);\n';
         script += '\n\t};\n';
-        script += 'return __callThisConstructor__.apply(this, arguments);';
+        script += 'return __callThisConstructor__.apply(___self___, arguments);';
         script += "}"//fim da classe
 
 
@@ -2396,6 +2423,7 @@ var JSComet = function () {
             }
             functionCode += "(" + header + ")";
             var body = getRemainingLine(code, arrowIndex + 2);
+			
             body.value = trim(body.value);
             if (body.value.indexOf("{") == 0) {
                 functionCode += body.value;
@@ -3157,7 +3185,7 @@ var JSComet = function () {
                 if (valueInfo == null)
 						throwLineError(script, endCharacter.index, "Syntax error", typeElement);
                 typeElement.value = valueInfo.value;
-                bodyIndex = valueInfo.end + 1;
+                bodyIndex = valueInfo.end + 2;
                 continue;
             } else {
 				throwLineError(script, bodyIndex + 1, "Syntax error", typeElement);
