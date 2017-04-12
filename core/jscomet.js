@@ -229,7 +229,7 @@ var JSComet = function () {
 		}
 		if(require.main)//node js
 			return require.main.require(source, translateCodeAfterImport);
-		else if(__dirname && source.indexOf('.') == 0 && require.resolve){//node js repl e arquivo local
+		else if(typeof __dirname != "undefined" && source.indexOf('.') == 0 && require.resolve){//node js repl e arquivo local
 		
 			source = __dirname + '/.' + source;//sobe um nivel acima contando que jscomet.js sempre estará em /libs/jscomet.js
 			source = require.resolve(source);
@@ -2823,8 +2823,6 @@ var JSComet = function () {
 		isLibrary = isLibrary === true;
         this.options = options;
 		code = removeComments(code);
-		//code = removeComments_old(code);
-		require('fs').writeFile('C:\\Users\\ciros\\Desktop\\code.js', code, 'utf8');
 		
 		if (options['translateStringTemplates'] !== false)
             code = this.translateStringTemplates(code);

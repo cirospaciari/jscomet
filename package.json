@@ -10,8 +10,9 @@
   ],
   "license": "MIT",
   "name": "jscomet",
-  "version": "0.9.4",
-  "description": "JSComet create apps with OOP (private functions, static properties etc)",
+  "version": "0.9.6",
+  "keywords": ["private", "oop", "6to5", "jscomet", "classes", "const", "es6", "modules", "transpile", "transpiler", "var", "compiler", "export", "import"],
+  "description": "JSComet create apps with OOP like ES6, TypeScript, Babel (but with private functions, static properties etc)",
   "bin": {
     "jscomet": "./jscomet"
   },
