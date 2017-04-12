@@ -1520,7 +1520,7 @@ var JSComet = function () {
                 }
                 if (privateStatics.length > 0) {
                     //substitui privados statics
-                    var regex = new RegExp("([\\s]?" + escapeRegExp(type.name) + "[\\s]?\\.)([^0-9][\w]*[\s]*)(\(|[\s|+|-|*|\/|~|^|,]|\;|\.|\)|\[)", "gi");
+                    var regex = new RegExp("([\\s]?" + escapeRegExp(type.name) + "[\\s]?\\.)([^0-9][\\w]*[\\s]*)(\\(|[\\s|+|-|*|\\/|~|^|,]|\\;|\\.|\\)|\\[)", "gi");
                     codeParts[i].value = codeParts[i].value.replace(regex, function ($0, $1, $2, $3) {
                         var name = trim($2);
                         if (indexOf(privateStatics, name) == -1)

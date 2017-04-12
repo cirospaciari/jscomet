@@ -744,7 +744,7 @@ function main(){
 	switch(args[1]){
 		case "v":
 		case "version":
-			console.log("v0.9.3");
+			console.log("v0.9.4");
 		break;
 		case "build":
 			build.apply(this, args.slice(2));
