@@ -1,7 +1,26 @@
-Known Issues:
-    -Performance and code generated need to be improved
-    -Async and await is buggy and poorly developed (for testing purposes only).
 
+Pros:
+
+        Types and Return Types checked in runtime
+        Truly private functions
+        Can be used ahead-of-time (and i recommend it!)
+        Can be used directly in the browser
+        Fast build
+        Fast for use as runtime on smaller frontend projects or used as generated library in bigger projects
+        Easy to install, create, build and run
+        Nice way to organize and reference js libraries
+        
+
+
+Cons:
+
+        Types and Return Types checked in runtime
+        Does not use a proper js parser (but will in the future)
+        Generate unnecessary code (but will in the future)
+        Dont have a proper async and await implementation (but will in the future)
+        Dont have all ES6 funcionalities 
+
+        
 How install:
 
 npm install -g jscomet
