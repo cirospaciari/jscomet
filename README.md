@@ -14,9 +14,8 @@ Pros:
 
 Cons:
 
-        Types and Return Types checked in runtime
         Does not use a proper js parser (but will in the future)
-        Generate unnecessary code (but will in the future)
+        Generate unnecessary code
         Dont have a proper async and await implementation (but will in the future)
         Dont have all ES6 funcionalities 
 
