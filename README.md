@@ -1,4 +1,9 @@
 
+[![NPM version](https://img.shields.io/npm/v/jscomet.svg)](https://img.shields.io/npm/v/jscomet.svg)
+[![NPM License](https://img.shields.io/npm/l/jscomet.svg)](https://img.shields.io/npm/l/jscomet.svg)
+[![NPM Downloads](https://img.shields.io/npm/dm/jscomet.svg?maxAge=43200)](https://img.shields.io/npm/dm/jscomet.svg?maxAge=43200)
+
+
 Pros:
 
         Types and Return Types checked in runtime
