@@ -1,3 +1,4 @@
+[![npm package](https://nodei.co/npm/jscomet.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/jscomet/)
 
 [![NPM version](https://img.shields.io/npm/v/jscomet.svg)](https://img.shields.io/npm/v/jscomet.svg)
 [![NPM License](https://img.shields.io/npm/l/jscomet.svg)](https://img.shields.io/npm/l/jscomet.svg)
