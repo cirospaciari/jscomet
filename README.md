@@ -28,11 +28,11 @@ Cons:
         
 How install:
 
-npm install -g jscomet
+npm install jscomet -g
 
 How use:
 
-Project types available: app, console, library. (Desktop and web coming soon)
+Project types available: app, console, library, web. (Desktop coming soon)
 
 Command line:
 
