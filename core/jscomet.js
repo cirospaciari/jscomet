@@ -1769,15 +1769,15 @@ var JSComet = function () {
         			      else
         				        returnValidation = "";
 
+                    var privateName = prop.get.isStatic ? '___privateStatic___' : '___private___';
+                    var publicName = prop.get.isStatic ? type.name : '___self___';
+
                     var defaultGet = "";
                     var defaultSet = "";
                     getFunc = "(function " + prop.get.name + "(){" + replacePrivatesAndSuper(prop.get.value.body, type, null, prop.get.isStatic) + "})";
                     setFunc = "(function " + prop.set.name + "(" + setParameter + "){\n" + validation + "\n" + replacePrivatesAndSuper(prop.set.value.body, type, null, prop.set.isStatic) + " })";
-                    getFunc = "(function(){ var z____return = " + getFunc + ".apply(___self___, arguments);\n " + returnValidation + " return z____return;})";
-                    setFunc = "(function(){ return " + setFunc + ".apply(___self___, arguments);})";
-
-                    var privateName = prop.get.isStatic ? '___privateStatic___' : '___private___';
-                    var publicName = prop.get.isStatic ? type.name : '___self___';
+                    getFunc = "(function(){ var z____return = " + getFunc + ".apply(" + publicName + ", arguments);\n " + returnValidation + " return z____return;})";
+                    setFunc = "(function(){ return " + setFunc + ".apply("+publicName + ", arguments);})";
 
 
                     var propertyCode = "";
