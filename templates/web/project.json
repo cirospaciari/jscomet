@@ -1,0 +1,8 @@
+{
+   "Name": "{ProjectName}",
+   "Source": "{ProjectName}/src",
+   "Bin": "{ProjectName}/bin",
+   "IgnorePathsOnTranslate": ["libs", "node_modules", "files/assets/js"],
+   "Type": "web",
+   "MainFile": "main.js"
+}
