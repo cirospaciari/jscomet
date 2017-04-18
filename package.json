@@ -10,9 +10,9 @@
   ],
   "license": "MIT",
   "name": "jscomet",
-  "version": "0.9.9",
-  "keywords": ["private", "oop", "6to5", "jscomet", "classes", "const", "es6", "modules", "transpile", "transpiler", "var", "compiler", "export", "import", "web", "mvc", "library"],
-  "description": "JSComet is a easy way of creating apps with class like ES6/TypeScript/Babel features with truly private vars and functions, type validations, function overloads, all in runtime and can create libraries like browserify and reference this in projects for better organizing your code",
+  "version": "0.9.10",
+  "keywords": ["private", "oop","oo","es2015", "es2016", "es7", "6to5", "jscomet", "classes", "const", "es6", "modules", "transpile", "transpiler", "var", "compiler", "export", "import", "web", "mvc", "library"],
+  "description": "JSComet is a easy way of creating apps with OO class like ES6/TypeScript/Babel features with truly private vars and functions, type validations, function overloads, all in runtime and can create libraries like browserify and reference this in projects.",
   "bin": {
     "jscomet": "./jscomet"
   },
