@@ -5,7 +5,7 @@
 [![NPM Downloads](https://img.shields.io/npm/dm/jscomet.svg?maxAge=43200)](https://img.shields.io/npm/dm/jscomet.svg?maxAge=43200)
 
 
-Pros:
+JSComet is a easy way of creating apps with OO class like ES6/TypeScript/Babel features with truly private vars and functions, type validations, function overloads, all in runtime and can create libraries like browserify and reference this in projects.
 
         Types and Return Types checked in runtime
         Truly private functions
@@ -16,15 +16,6 @@ Pros:
         Easy to install, create, build and run
         Nice way to organize and reference js libraries
         
-
-
-Cons:
-
-        Does not use a proper js parser (but will in the future)
-        Generate unnecessary code
-        Dont have a proper async and await implementation (but will in the future)
-        Dont have all ES6 funcionalities 
-
         
 How install:
 
