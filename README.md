@@ -25,6 +25,8 @@ How use:
 
 Project types available: app, console, library, web. (Desktop coming soon)
 
+For documentation, examples and more details [click here](https://gitlab.com/cirospaciari/jscomet/tree/master/docs)
+
 Command line:
 
         version                                  show JSComet version
