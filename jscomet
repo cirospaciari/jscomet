@@ -490,6 +490,7 @@ function run(projectName){
 			
 			
 		}catch(ex){
+
 			if(ex.code === 'MODULE_NOT_FOUND'){
 				console.error("Project type not found");
 			}else
@@ -744,7 +745,7 @@ function main(){
 	switch(args[1]){
 		case "v":
 		case "version":
-			console.log("v1.0.0");
+			console.log("v1.0.1");
 		break;
 		case "build":
 			build.apply(this, args.slice(2));

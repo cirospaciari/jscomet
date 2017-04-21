@@ -2132,21 +2132,21 @@ var JSComet = function () {
             var translateCodeAfterImport = this.options['translateCodeAfterImport'] !== false ? "true" : "false";
 			
 			if(isLibrary === true)
-				newCode += "\nvar imported = JSComet.include(" + importFile + ", " + translateCodeAfterImport + ", z____memoryImport);\n";
+				newCode += "\nvar ____imported = JSComet.include(" + importFile + ", " + translateCodeAfterImport + ", z____memoryImport);\n";
 			else
-				newCode += "\nvar imported = JSComet.include(" + importFile + ", " + translateCodeAfterImport + ");\n";
+				newCode += "\nvar ____imported = JSComet.include(" + importFile + ", " + translateCodeAfterImport + ");\n";
 				
 			if (importConfig) {
 				for (var i in importConfig) {
 					var exportName = importConfig[i];
 					var name = i;
 					if (name == "*") {
-						newCode += "\nvar " + exportName + " = imported;";
+						newCode += "\nvar " + exportName + " = ____imported;";
 					} else {
-						newCode += "\nvar " + exportName + " = imported." + name + ";";
+						newCode += "\nvar " + exportName + " = ____imported." + name + ";";
 					}
 				}
-				newCode += "\ndelete imported;";
+				//newCode += "\ndelete imported;";
 			}
             newCode += code.substring(line.end);
             code = newCode;

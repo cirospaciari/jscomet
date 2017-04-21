@@ -1,3 +1,4 @@
+var asyncToGen = require('async-to-gen');
 var fs = require("fs");
 var path = require('path');
 var glob = require('glob');
@@ -59,14 +60,21 @@ function WebTemplate(){
 				ignoreList.push(path.join(project.Source, project.IgnorePathsOnTranslate[j], "/**/**"));
 			}
 			var files = glob.sync(path.join(project.Source, "/**/**"), { "ignore": ignoreList });
-			
+			var options = project.Options || solution.Options;
+			var translateAsync = false;
+			if (options["translateAsyncFunctions"]) {
+				options["translateAsyncFunctions"] = false;
+				translateAsync = true;
+			}
 			for(var i = 0; i < files.length;i++){
 				var extension = (path.extname(files[i]) || "").toLowerCase();
 				if(extension == ".js"){
 					try{
 						var text = fs.readFileSync(files[i]).toString();
-						text = JSComet.translate(text, project.Options || solution.Options);
-						
+						text = JSComet.translate(text, options);
+						if(translateAsync){
+							text = asyncToGen(text).toString();
+						}
 						var binFile = path.join(project.Bin, files[i].substr(project.Source.length));
 						ensureDirectoryExistence(binFile);
 				

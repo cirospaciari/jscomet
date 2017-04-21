@@ -1,3 +1,4 @@
+var asyncToGen = require('async-to-gen');
 var fs = require("fs");
 var path = require('path');
 var glob = require('glob');
@@ -62,12 +63,21 @@ function LibraryTemplate(){
 			var libText = "var z____memoryImport = z____memoryImport || {};\n";
 			//libText += "var	JSComet = JSComet || require('./libs/jscomet.js')['default'];\n";
 			var mainText = "";
+			var options = project.Options || solution.Options;
+			var translateAsync = false;
+			if (options["translateAsyncFunctions"]) {
+				options["translateAsyncFunctions"] = false;
+				translateAsync = true;
+			}
 			for(var i = 0; i < files.length;i++){
 				var extension = (path.extname(files[i]) || "").toLowerCase();
 				if(extension == ".js"){
 					try{
 						var text = fs.readFileSync(files[i]).toString();
-						text = JSComet.translate(text, project.Options || solution.Options, true);
+						text = JSComet.translate(text, options, true);
+						if(translateAsync){
+							text = asyncToGen(text).toString();
+						}
 						var source = files[i].substr(project.Source.length);
 						if(source == project.MainFile || source == "/" + project.MainFile)
 						{				
