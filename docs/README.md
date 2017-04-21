@@ -4,7 +4,7 @@ The Web project type is a easy way of implement MVC using express.
 
 ### Command line tools
  
-##### Creation a new project
+##### Creating a new project
 To create a new project you need to create a solution first, after execute the command the default struct will be create.
 ```sh
 jscomet create solution
