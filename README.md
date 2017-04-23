@@ -279,27 +279,26 @@ class MyClass {
 }
 ```
 
-Decorators (coming soon):
+Decorators (for more information [click here](https://www.npmjs.com/package/jscomet.decorators))
 
 ```javascript
-import { abstract, sealed, deprecated } from './libs/JSComet.Decorators.js';
-
+import { abstract, sealed, deprecated } from 'jscomet.decorators';
+ 
+//abstract decorators do not allow this class to be instanced only inherited 
 @abstract
-class Teste{
-
-	@enumerable
-	name: string = "ciro";
-	surname: string = "spaciari";
-	
-	@deprecated("This function will be removed in future versions. DON'T USE THIS!", { error: true })
-	teste(code: int){
-	
-	}
+class Test{
+    name: string = "ciro";
+    surname: string = "spaciari";
+    
+    //when this function is called this error will be thrown, if you not set error: true a warning will be thrown 
+    @deprecated("This function will be removed in future versions. DON'T USE THIS!", { error: true })
+    test(code: int){
+    
+    }
 }
-
+//sealed decorators do not allow this class to be inherited any more 
 @sealed
-class Teste2 extends Teste{
-	@extendDescriptor
-	name: string = "ciro";
+class Test2 extends Test{
+    name: string = "ciro";
 }
 ```
