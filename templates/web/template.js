@@ -60,7 +60,11 @@ function WebTemplate(){
 				ignoreList.push(path.join(project.Source, project.IgnorePathsOnTranslate[j], "/**/**"));
 			}
 			var files = glob.sync(path.join(project.Source, "/**/**"), { "ignore": ignoreList });
-			var options = project.Options || solution.Options;
+			var options = {};
+			var projectOptions = project.Options || solution.Options;
+			for(var i in projectOptions){
+				options[i] = projectOptions[i];
+			}
 			var translateAsync = false;
 			if (options["translateAsyncFunctions"]) {
 				options["translateAsyncFunctions"] = false;

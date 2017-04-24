@@ -63,7 +63,11 @@ function LibraryTemplate(){
 			var libText = "var z____memoryImport = z____memoryImport || {};\n";
 			//libText += "var	JSComet = JSComet || require('./libs/jscomet.js')['default'];\n";
 			var mainText = "";
-			var options = project.Options || solution.Options;
+			var options = {};
+			var projectOptions = project.Options || solution.Options;
+			for(var i in projectOptions){
+				options[i] = projectOptions[i];
+			}
 			var translateAsync = false;
 			if (options["translateAsyncFunctions"]) {
 				options["translateAsyncFunctions"] = false;

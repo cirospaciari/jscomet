@@ -60,12 +60,18 @@ function AppTemplate(){
 			}
 			var files = glob.sync(path.join(project.Source, "/**/**"), { "ignore": ignoreList });
 			
-			var options = project.Options || solution.Options;
+			var options = {};
+			var projectOptions = project.Options || solution.Options;
+			for(var i in projectOptions){
+				options[i] = projectOptions[i];
+			}
 			var translateAsync = false;
+			console.log("options", options);
 			if (options["translateAsyncFunctions"]) {
 				options["translateAsyncFunctions"] = false;
 				translateAsync = true;
 			}
+			console.log("translateAsync", translateAsync);
 			for(var i = 0; i < files.length;i++){
 				var extension = (path.extname(files[i]) || "").toLowerCase();
 				if(extension == ".js"){

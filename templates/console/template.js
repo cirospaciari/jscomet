@@ -67,7 +67,11 @@ function AppTemplate() {
 					"ignore" : ignoreList
 				});
 
-			var options = project.Options || solution.Options;
+			var options = {};
+			var projectOptions = project.Options || solution.Options;
+			for(var i in projectOptions){
+				options[i] = projectOptions[i];
+			}
 			var translateAsync = false;
 			if (options["translateAsyncFunctions"]) {
 				options["translateAsyncFunctions"] = false;
