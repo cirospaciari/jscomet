@@ -66,12 +66,10 @@ function AppTemplate(){
 				options[i] = projectOptions[i];
 			}
 			var translateAsync = false;
-			console.log("options", options);
 			if (options["translateAsyncFunctions"]) {
 				options["translateAsyncFunctions"] = false;
 				translateAsync = true;
 			}
-			console.log("translateAsync", translateAsync);
 			for(var i = 0; i < files.length;i++){
 				var extension = (path.extname(files[i]) || "").toLowerCase();
 				if(extension == ".js"){
