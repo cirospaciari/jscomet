@@ -2,50 +2,45 @@ var z____memoryImport = z____memoryImport || {};
 
 
 
-var imported = JSComet.include("bliss", false, z____memoryImport);
+var ____imported = JSComet.include("bliss", false, z____memoryImport);
 
-var Bliss = imported;
-delete imported;;
+var Bliss = ____imported;;
 
-var imported = JSComet.include("fs", false, z____memoryImport);
+var ____imported = JSComet.include("fs", false, z____memoryImport);
 
-var fs = imported;
-delete imported;;
+var fs = ____imported;;
 
-var imported = JSComet.include('express', false, z____memoryImport);
+var ____imported = JSComet.include('express', false, z____memoryImport);
 
-var express = imported;
-delete imported;;
+var express = ____imported;;
 
-var imported = JSComet.include('path', false, z____memoryImport);
+var ____imported = JSComet.include('path', false, z____memoryImport);
 
-var path = imported;
-delete imported;;
+var path = ____imported;;
 
-var imported = JSComet.include('cookie-parser', false, z____memoryImport);
+var ____imported = JSComet.include('cookie-parser', false, z____memoryImport);
 
-var cookieParser = imported;
-delete imported;;
+var cookieParser = ____imported;;
 
-var imported = JSComet.include('body-parser', false, z____memoryImport);
+var ____imported = JSComet.include('body-parser', false, z____memoryImport);
 
-var bodyParser = imported;
-delete imported;;
+var bodyParser = ____imported;;
 
-var imported = JSComet.include('morgan', false, z____memoryImport);
+var ____imported = JSComet.include('morgan', false, z____memoryImport);
 
-var logger = imported;
-delete imported;;
+var logger = ____imported;;
 
-var imported = JSComet.include('serve-favicon', false, z____memoryImport);
+var ____imported = JSComet.include('serve-favicon', false, z____memoryImport);
 
-var favicon = imported;
-delete imported;;
+var favicon = ____imported;;
 
-var imported = JSComet.include('compression', false, z____memoryImport);
+var ____imported = JSComet.include('compression', false, z____memoryImport);
 
-var compression = imported;
-delete imported;;
+var compression = ____imported;;
+
+var ____imported = JSComet.include('express-session', false, z____memoryImport);
+
+var session = ____imported;;
 
 
 var JSCometWeb = JSCometWeb || {}; 
@@ -1309,6 +1304,7 @@ ___self___.match =  (function match(request,  response){
 				controller.query = query;
 				controller.body = request.body || {};
 				controller.files = request.files;
+				controller.session = request.session;
 				
 				for(var j in parameters)
 					if(j != "controller" && j != "action")
@@ -1456,14 +1452,21 @@ if(routeEngine !== null && !(routeEngine instanceof RouteEngine))
 		 ___private___.config	 = config;
 			var directory = routeEngine.appDirectory;
 
-			app.use(logger('dev'));	
+			app.use(session({
+							secret: config.session.secret, 
+							name : config.session.name, 
+							resave: true, 
+							saveUninitialized: true,
+							cookie: { maxAge: config.session.maxAge }
+			}));
+							
 			app.use(compression());
 			app.use(bodyParser.json());
 			app.use(bodyParser.urlencoded({ extended: false }));
 			app.use(cookieParser());
 			app.use(config.publicDir, express.static(path.join(directory, config.publicDir)));
 			app.use('/favicon.ico', express.static(path.join(directory, 'favicon.ico')));
-
+			app.disable('x-powered-by');
 			var router = express.Router();
 
 			var routeHandler = ((function(_this){ return (function(){return (function (request, response, next){
@@ -1524,3 +1527,10 @@ module.exports. Environment =
 
 
 module.exports['default'] = JSCometWeb;
+
+
+
+
+
+
+
