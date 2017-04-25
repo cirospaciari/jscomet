@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var glob = require('glob');
 var fs = require('fs');
 var path = require('path');
@@ -745,7 +747,7 @@ function main(){
 	switch(args[1]){
 		case "v":
 		case "version":
-			console.log("v1.0.12");
+			console.log("v1.0.13");
 		break;
 		case "build":
 			build.apply(this, args.slice(2));
