@@ -10,7 +10,7 @@
   ],
   "license": "MIT",
   "name": "jscomet",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "keywords": [
     "private",
     "console",
@@ -59,6 +59,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://cirospaciari@gitlab.com/cirospaciari/jscomet.git"
+    "url": "https://github.com/cirospaciari/jscomet.git"
   }
 }
