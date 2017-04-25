@@ -1,3 +1,14 @@
+# Summary
+
+* [Command line tools](#command-line-tools)
+* [Transpiler features](#transpiler-features)
+* [Decorators](#decorators)
+* Web MVC
+    * [Routes](#routes)
+    * [SSL](#ssl)
+    * [Controller](#class-Controller)
+
+
 # Web Project Type
  
 The Web project type is a easy way of implement MVC using express.
@@ -480,3 +491,214 @@ Just a shortcut for httpRequest with default method as get.
 
 ### @httpPost(url: string, options: object)
 Just a shortcut for httpRequest with default method as post.
+
+# Transpiler Features
+
+main.js
+```javascript
+import SampleModule, {url} from './js/SampleModule.js';
+
+
+//Modules can be used as namespace
+var sampleClient = SampleModule.Client.getByID(1);
+
+//is possible use String Template, in this case for encodeURIComponent each parameter
+var sampleTemplateFunction = url `/client/?email=${sampleClient.email}`;
+
+```
+
+./js/SampleMdule.js:
+
+```javascript
+module SampleModule {
+	//you can use import and export 
+	//https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Statements/export
+	export var UserType = {
+		Default : 0,
+		Guest : 1,
+		Admin : 2,
+		Premium : 3
+	};
+
+	class User {
+		//typed fields are generated as properties get/set, and can be private, public, static, private static e public static
+		//if you just want a easy way to create a property you can use any as type
+		name : string;
+		surname : string;
+		email : string;
+		password : string;
+		type : int = UserType.Default;
+		/*
+		int is a special validator for number types:
+
+		bit :  min: 0 max: 1
+		sbyte :  min: -128 max: 127
+		byte :  min: 0 max: 255
+		short :  min: -32768 max: 32767
+		ushort :  min: 0 max: 65535
+		int :  min: -2147483648 max: 2147483647
+		uint :  min: 0 max: 4294967295
+		long :  min: -9007199254740991  max: 9007199254740991
+		ulong :  min: 0  max: 9007199254740991
+
+		this types cant be NaN, null or undefined
+
+		for floats:
+
+		float: min: -3.402823E+38 max: -3.402823E+38
+		double: min: -1.7976931348623157e+308 max: 1.7976931348623157e+308
+
+		this types cant be NaN, null or undefined
+
+		you can use more than one type, for example for int nullable you can use:
+		age: int | null;
+
+	    For string, number, boolean, object, function e symbol, CANT be undefined and only boolean CANT be null 
+
+		Typed Array shortcuts:
+
+		sbyte[]: Int8Array
+		byte[]: Uint8Array
+		short[]: Int16Array
+		ushort[]: Uint16Array
+		int[]: Int32Array
+		uint[]: Uint32Array
+		float[]: Float32Array
+		double[]: Float64Array
+
+		Any type can be declared with Type[] but will be generated as a native Array type
+
+		Samples:
+		var a = new sbyte[];
+		var a = new sbyte[](10);
+		var a = new sbyte[]([1, 2, 3, 4]);
+		types: int[];
+
+		Other validators:
+		any: accept any value
+		char: only string with length equals 1 CANT be null or undefined
+		void: force only undefined values can be used for validate returns
+		undefined: like void only accept undefined (can be used for optionals params like : string | undefined)
+		null: only accept null (can be used for create nullable values like: int | null)
+		 */
+
+	
+		constructor(name : string, surname : string, email : string, password : string) {
+			this.name = name;
+			this.email = email;
+			this.password = password;
+			this.surname = surname;
+		}
+
+	
+		get fullname() : string {
+			return `${this.name} ${this.surname}`;
+		}
+
+		toString() {
+			return  `${this.name};${this.email};${this.password};${this.surname};${this.type}`;
+		}
+	}
+
+
+	export { User as ClientBase };
+
+	export class Client extends User {
+
+		private id : int = 0;
+
+		constructor() {
+			super(null, null, null, null);
+		}
+
+		//You can create overloads create function/constructor but overloads are differentiated only by the number of parameters and types are not considered
+		constructor(user : User) {
+			super(user.name, user.surname, user.email, user.password); //super realiza chamadas do construtor da classe herdada
+		}
+
+		constructor(id : int, user : User) {
+			this(user); //you can use this() for call constructor
+			this.id = id;
+		}
+
+		public get ID() : int {
+			return this.id;
+		}
+
+		toString() {
+			//super.fieldOrFunction can access functions and fields of inherited class
+			return `${super.toString()};${this.id}`;
+		}
+
+		private static generateNewPassword() : string {
+			return 'xyxxyxyx'.replace(/[xy]/g, (_char) => {
+					var random = Math.random() * 16 | 0;
+					var value = _char == 'x' ? random : (random & 0x3 | 0x8);
+					return value.toString(16);
+				});
+		}
+
+		public static getByID(id : int) : User {
+			/*FAKE QUERY*/
+			return new Client(id, new User('Michael',
+										   'Silva',
+										   'michael.silva@gmail.com',
+										   Client.generateNewPassword()));
+		}
+
+		public static find(email : string) {
+			/*FAKE QUERY*/
+			var list = new User[](10);
+			for (var i = 0; i < 10; i++) {
+				var user = Client.getByID(i + 1);
+				user.email = email || user.email;
+				list.push(user);
+			}
+			return list;
+		}
+
+		/*
+    	Overloads are differentiated only by the number of parameters and types are not considered
+		 */
+		public static find(name : string, surname : string) {
+			/*FAKE QUERY*/
+			var list = new User[](10);
+			for (var i = 0; i < 10; i++) {
+				var user = Client.getByID(i + 1);
+				user.name = name || user.name;
+				user.surname = surname || user.surname;
+				list.push(user);
+			}
+			return list;
+		}
+
+	}
+}
+
+/*
+Is possible use "..." before a parameter name for create a REST parameter
+ */
+export function url(pieces, ...substitutions) {
+	var result = pieces[0];
+	for (var i = 0; i < substitutions.length; ++i) {
+		result += encodeURIComponent(substitutions[i]) + pieces[i + 1];
+	}
+	return result;
+}
+export default SampleModule;
+```
+
+### Sub Classes:
+
+```javascript
+class MyClass { 
+	class MySubClass{//public
+				
+	}
+	private class MyPrivateSubClass{//private
+			
+	}
+	public class MyPublicSubClass{//public
+	}
+}
+```
