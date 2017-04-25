@@ -6,7 +6,7 @@
 * Web MVC
     * [Routes](#routes)
     * [SSL](#ssl)
-    * [Controller](#class-Controller)
+    * [Controller](#class-controller)
 
 
 # Web Project Type
