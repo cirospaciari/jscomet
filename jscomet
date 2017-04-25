@@ -5,7 +5,7 @@ var JSComet = require("./core/jscomet.js")["default"];
 var ncp = require('ncp').ncp; 
 ncp.limit = 16;
 							
-GLOBAL.JSComet = JSComet;
+global.JSComet = JSComet;
 
 var solutionDirectory = "./";
 var solutionPath = "./solution.json";
@@ -745,7 +745,7 @@ function main(){
 	switch(args[1]){
 		case "v":
 		case "version":
-			console.log("v1.0.11");
+			console.log("v1.0.12");
 		break;
 		case "build":
 			build.apply(this, args.slice(2));
