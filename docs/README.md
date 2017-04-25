@@ -337,3 +337,146 @@ This function is like render function but instead return entire html, return vie
     <p>@html.partial('person', model.persons[i])</p>
 }
 ```
+
+# Decorators
+JSComet support decorators to help consume Rest API, cache, log, validation and more features. To use this features you need to install [jscomet.decorators](https://www.npmjs.com/package/jscomet.decorators) package in your project src folder.
+```sh
+npm install jscomet.decorators
+```
+
+### @abstract
+Abstract decorators do not allow this class to be instanced only inherited, when applied in a function or property throw a exception if not overrided. Can be used in classes, functions and properties.
+```javascript
+import { abstract  } from 'jscomet.decorators';
+@abstract
+class Test{
+    name: string = "ciro";
+    @abstract
+    surname: string;
+    
+    @abstract
+    getMessage(){
+    }
+}
+```
+
+### @sealed
+Sealed decorators do not allow this class to be inherited any more. Can be only in classes.
+```javascript
+import { sealed  } from 'jscomet.decorators';
+
+@sealed
+class Test2 extends Test{
+    name: string = "ciro";
+}
+```
+
+### @deprecated(message: string, options: object)
+Deprecated decorators can be used to throw a exception or log a warning, options parameter is optional
+
+```javascript
+import { deprecated  } from 'jscomet.decorators';
+
+class Test{
+    //throw a exception: This function will be removed in future versions. DON'T USE THIS!
+    @deprecated("This function will be removed in future versions. DON'T USE THIS!", { error: true })
+    test(code: int){
+    
+    }
+    //log a warning: This function will be removed in future versions.
+    @deprecated
+    test2(code: int){
+    
+    }
+    //log a warning: This function will be removed in future versions. See http://mysite.com/deprecated/test3 for more details.
+    @deprecated("This function will be removed in future versions. DON'T USE THIS!", { url: "http://mysite.com/deprecated/test3" })
+    test3(code: int){
+    
+    }
+}
+//sealed decorators do not allow this class to be inherited any more 
+@sealed
+class Test2 extends Test{
+    name: string = "ciro";
+}
+```
+
+### @memoryCache(duration: int)
+Create a cache in memory using a static object, you can use in class functions and this decorators support async functions.
+
+```javascript
+import { memoryCache } from 'jscomet.decorators';
+
+class User{
+    //this will create a result cache using function arguments as key for X milliseconds
+    @memoryCache(60 * 1000)
+    getUserByID(userID){
+    }
+    //You can use in functions that returns a Promise or async functions
+    @memoryCache(60 * 1000)
+    async getUsersByName(name){
+        return await DAL.User.getUsersByName(name);
+    }
+}
+```
+
+### @httpRequest(url: string, options: object)
+HttpRequest decorator is a helper to consume Rest API`s. If a function use this decorator the function will return a Promise and hers body only will be called if the request is NOT successfully.
+Parameter url contains a url format to execute a http request:
+
+```javascript
+import { httpRequest } from 'jscomet.decorators';
+
+class Sample{
+    @httpRequest("http://httpbin.org/get?s={0}")
+    getSample(search){
+    }
+    // {search: "value"}
+    @httpRequest("http://httpbin.org/get?s={search}")
+    getSample2(data: object){
+        //the function body only is called if a http error as throw
+        console.error(httpRequest.getLastError());
+        //return default value
+        return {};
+    }
+    @httpRequest("http://httpbin.org/post", { method: "post"})
+    postSample(data: object){
+    }
+}
+
+```
+The @setting:MySettingName format can be used to add a value in url for not keep the base url hard coded.
+
+```javascript
+import { httpRequest } from 'jscomet.decorators';
+
+httpRequest.loadSettings({
+    "myUrl": "http://httpbin.org/get"
+});
+
+class Sample{
+    @httpRequest("@setting:myUrl?s={0}")
+    getSample(search){
+    }
+}
+```
+
+Parameter options is optional and can contains the struct bellow:
+```javascript
+{
+      method: "get", //method can be get, post, head, put, update, delete etc (get as default)
+      responseType: "text", //responseType can be text or json (text as default)
+      contentType: "json", //contentType can be text or json (json as default)
+      //can be passed headers ({} as default)
+      headers: {
+        "MyHeaderName": "MyHeaderValue",
+        "MyHeaderName2": "{0}", //use arguments index 0 as value
+        "MyHeaderName3": "{headerParam}", //use property headerParam of arguments passed
+      }
+}
+```
+### @httpGet(url: string, options: object)
+Just a shortcut for httpRequest with default method as get.
+
+### @httpPost(url: string, options: object)
+Just a shortcut for httpRequest with default method as post.
