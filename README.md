@@ -43,29 +43,22 @@ Command line:
         reference remove %PROJECT_NAME% %REFERENCE_PROJECT_NAME%         remove project reference
         add %FILE_TEMPLATE% %PROJECT_NAME% %FILE_PATH%                   add a file
          Default Options:
-          add html MyProject myHTMLFile
-          add xml MyProject myXMLFile
-          add js MyProject myJSFile
-          add css MyProject myJSFile
           add class MyProject models\myModelClass
           add class MyProject models\myModelClass extended myModelBase
           add class MyProject models\myModelClass singleton
-          add controller MyProject myControllerClass
-          add view MyProject user\myView
-          add layout MyProject myLayout
        
 
-Exemplos:
+# Transpiler Features
 
 main.js
 ```javascript
 import SampleModule, {url} from './js/SampleModule.js';
 
-//Modulos servem de namespace para melhor organização
+
+//Modules can be used as namespace
 var sampleClient = SampleModule.Client.getByID(1);
 
-//É possivel chamar uma função junto a uma String Template, neste caso para
-//usar encodeURIComponent em cada parametro na concatenação facilitando chamadas de api's ou redirecionamentos
+//is possible use String Template, in this case for encodeURIComponent each parameter
 var sampleTemplateFunction = url `/client/?email=${sampleClient.email}`;
 
 ```
@@ -74,7 +67,7 @@ var sampleTemplateFunction = url `/client/?email=${sampleClient.email}`;
 
 ```javascript
 module SampleModule {
-	//para tornar algo visivel no modulo basta usar export, este foi implementado de acordo com ES6:
+	//you can use import and export 
 	//https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Statements/export
 	export var UserType = {
 		Default : 0,
@@ -84,15 +77,15 @@ module SampleModule {
 	};
 
 	class User {
-		//fields tipados são transformados em get/set automaticamente, podem ser private, public, static, private static e public static
-		//não é obrigado adicionar um tipo e caso queira apenas um atalho para criar um get/set pode ser usado o tipo any
+		//typed fields are generated as properties get/set, and can be private, public, static, private static e public static
+		//if you just want a easy way to create a property you can use any as type
 		name : string;
 		surname : string;
 		email : string;
 		password : string;
 		type : int = UserType.Default;
 		/*
-		int é um validador especial de int para o tipo number segue lista de validadores:
+		int is a special validator for number types:
 
 		bit :  min: 0 max: 1
 		sbyte :  min: -128 max: 127
@@ -104,22 +97,21 @@ module SampleModule {
 		long :  min: -9007199254740991  max: 9007199254740991
 		ulong :  min: 0  max: 9007199254740991
 
-		alem da validação de valores minimos e máximos esses NÃO podem ser NaN / null / undefined
+		this types cant be NaN, null or undefined
 
-		para pontos flutuantes temos:
+		for floats:
 
 		float: min: -3.402823E+38 max: -3.402823E+38
 		double: min: -1.7976931348623157e+308 max: 1.7976931348623157e+308
 
-		alem da validação de valores minimos e máximos esses NÃO podem ser NaN / null / undefined
+		this types cant be NaN, null or undefined
 
-		para criar um inteiro/flutuante que aceite null basta usar multipla tipagem exemplo:
+		you can use more than one type, for example for int nullable you can use:
 		age: int | null;
 
-		Dos tipos nativos string, number, boolean, object, function e symbol, apenas boolean NÃO pode ser null e
-		nenhum deles podem ser undefined
+	    For string, number, boolean, object, function e symbol, CANT be undefined and only boolean CANT be null 
 
-		Existem tambem atalhos para Typed Array:
+		Typed Array shortcuts:
 
 		sbyte[]: Int8Array
 		byte[]: Uint8Array
@@ -130,27 +122,23 @@ module SampleModule {
 		float[]: Float32Array
 		double[]: Float64Array
 
-		Qualquer tipo pode ser declado com syntax Tipo[] porem serão transformados em Array genericos
+		Any type can be declared with Type[] but will be generated as a native Array type
 
-		Exemplos:
+		Samples:
 		var a = new sbyte[];
 		var a = new sbyte[](10);
 		var a = new sbyte[]([1, 2, 3, 4]);
 		types: int[];
 
-		Outros validadores que podem ser usados como tipos:
-		any: aceita qualquer valor
-		char: string com length 1 e que não pode ser null / undefined
-		void: o tipo deve ser undefined (pode ser usado para retorno de métodos
-		undefined: o tipo deve ser undefined
-		null: o tipo deve ser null
+		Other validators:
+		any: accept any value
+		char: only string with length equals 1 CANT be null or undefined
+		void: force only undefined values can be used for validate returns
+		undefined: like void only accept undefined (can be used for optionals params like : string | undefined)
+		null: only accept null (can be used for create nullable values like: int | null)
 		 */
 
-		/*
-		É possivel incluir tipos nos parametros para validação, caso receba um tipo inválido uma exception é disparada
-		construtores NÃO aceitam modificadores private / static
-		Obs: para aceitar mais de um tipo pode ser usado "|" por exemplo age: int | null
-		 */
+	
 		constructor(name : string, surname : string, email : string, password : string) {
 			this.name = name;
 			this.email = email;
@@ -158,26 +146,19 @@ module SampleModule {
 			this.surname = surname;
 		}
 
-		/*
-		get/set podem ser podem ser private, public, static, private static e public static
-
-		É possivel incluir tipo de retorno em propriedades ou métodos caso retorne um tipo inválido uma exception é disparada
-		Obs: para aceitar mais de um tipo pode ser usado "|" por exemplo age(): int | null { } )
-		*/
+	
 		get fullname() : string {
 			return `${this.name} ${this.surname}`;
 		}
 
 		toString() {
-			//Tambem damos suporte a template Strings para facilitar a concatenação de expressoes / variaveis
 			return  `${this.name};${this.email};${this.password};${this.surname};${this.type}`;
 		}
 	}
 
-	//É possivel informar um alias ao exportar algo
+
 	export { User as ClientBase };
 
-	//Herança de classes podem ser feitas usando extends lembrando que javascript não suporta herança multipla
 	export class Client extends User {
 
 		private id : int = 0;
@@ -186,13 +167,13 @@ module SampleModule {
 			super(null, null, null, null);
 		}
 
-		//É possivel criar sobrecargas de construtores desde que a quantidade de parametros seja diferente
+		//You can create overloads create function/constructor but overloads are differentiated only by the number of parameters and types are not considered
 		constructor(user : User) {
 			super(user.name, user.surname, user.email, user.password); //super realiza chamadas do construtor da classe herdada
 		}
 
 		constructor(id : int, user : User) {
-			this(user); //Uma sobre carga do construtor da popria classe pode ser chamada usando this()
+			this(user); //you can use this() for call constructor
 			this.id = id;
 		}
 
@@ -201,7 +182,7 @@ module SampleModule {
 		}
 
 		toString() {
-			//usando super.campoOuFuncao é possivel acessar métodos e fields da classe herdada
+			//super.fieldOrFunction can access functions and fields of inherited class
 			return `${super.toString()};${this.id}`;
 		}
 
@@ -233,7 +214,7 @@ module SampleModule {
 		}
 
 		/*
-		Sobre carga de métodos são feitas validando a quantidade de parametros e não tipos
+    	Overloads are differentiated only by the number of parameters and types are not considered
 		 */
 		public static find(name : string, surname : string) {
 			/*FAKE QUERY*/
@@ -251,7 +232,7 @@ module SampleModule {
 }
 
 /*
-É possivel usar "..." antes de um parametros para indicar que este é um REST parameter
+Is possible use "..." before a parameter name for create a REST parameter
  */
 export function url(pieces, ...substitutions) {
 	var result = pieces[0];
@@ -260,11 +241,10 @@ export function url(pieces, ...substitutions) {
 	}
 	return result;
 }
-//o uso de export segue o ES6: https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Statements/export
 export default SampleModule;
 ```
 
-Sub Classes:
+### Sub Classes:
 
 ```javascript
 class MyClass { 
@@ -281,18 +261,59 @@ class MyClass {
 
 Decorators (for more information [click here](https://www.npmjs.com/package/jscomet.decorators))
 
+# Decorators
+JSComet support decorators to help consume Rest API, cache, log, validation and more features. To use this features you need to install [jscomet.decorators](https://www.npmjs.com/package/jscomet.decorators) package in your project src folder.
+```sh
+npm install jscomet.decorators
+```
+
+### @abstract
+Abstract decorators do not allow this class to be instanced only inherited, when applied in a function or property throw a exception if not overrided. Can be used in classes, functions and properties.
 ```javascript
-import { abstract, sealed, deprecated } from 'jscomet.decorators';
- 
-//abstract decorators do not allow this class to be instanced only inherited 
+import { abstract  } from 'jscomet.decorators';
 @abstract
 class Test{
     name: string = "ciro";
-    surname: string = "spaciari";
+    @abstract
+    surname: string;
     
-    //when this function is called this error will be thrown, if you not set error: true a warning will be thrown 
+    @abstract
+    getMessage(){
+    }
+}
+```
+
+### @sealed
+Sealed decorators do not allow this class to be inherited any more. Can be only in classes.
+```javascript
+import { sealed  } from 'jscomet.decorators';
+
+@sealed
+class Test2 extends Test{
+    name: string = "ciro";
+}
+```
+
+### @deprecated(message: string, options: object)
+Deprecated decorators can be used to throw a exception or log a warning, options parameter is optional
+
+```javascript
+import { deprecated  } from 'jscomet.decorators';
+
+class Test{
+    //throw a exception: This function will be removed in future versions. DON'T USE THIS!
     @deprecated("This function will be removed in future versions. DON'T USE THIS!", { error: true })
     test(code: int){
+    
+    }
+    //log a warning: This function will be removed in future versions.
+    @deprecated
+    test2(code: int){
+    
+    }
+    //log a warning: This function will be removed in future versions. See http://mysite.com/deprecated/test3 for more details.
+    @deprecated("This function will be removed in future versions. DON'T USE THIS!", { url: "http://mysite.com/deprecated/test3" })
+    test3(code: int){
     
     }
 }
@@ -302,3 +323,83 @@ class Test2 extends Test{
     name: string = "ciro";
 }
 ```
+
+### @memoryCache(duration: int)
+Create a cache in memory using a static object, you can use in class functions and this decorators support async functions.
+
+```javascript
+import { memoryCache } from 'jscomet.decorators';
+
+class User{
+    //this will create a result cache using function arguments as key for X milliseconds
+    @memoryCache(60 * 1000)
+    getUserByID(userID){
+    }
+    //You can use in functions that returns a Promise or async functions
+    @memoryCache(60 * 1000)
+    async getUsersByName(name){
+        return await DAL.User.getUsersByName(name);
+    }
+}
+```
+
+### @httpRequest(url: string, options: object)
+HttpRequest decorator is a helper to consume Rest API`s. If a function use this decorator the function will return a Promise and hers body only will be called if the request is NOT successfully.
+Parameter url contains a url format to execute a http request:
+
+```javascript
+import { httpRequest } from 'jscomet.decorators';
+
+class Sample{
+    @httpRequest("http://httpbin.org/get?s={0}")
+    getSample(search){
+    }
+    // {search: "value"}
+    @httpRequest("http://httpbin.org/get?s={search}")
+    getSample2(data: object){
+        //the function body only is called if a http error as throw
+        console.error(httpRequest.getLastError());
+        //return default value
+        return {};
+    }
+    @httpRequest("http://httpbin.org/post", { method: "post"})
+    postSample(data: object){
+    }
+}
+
+```
+The @setting:MySettingName format can be used to add a value in url for not keep the base url hard coded.
+
+```javascript
+import { httpRequest } from 'jscomet.decorators';
+
+httpRequest.loadSettings({
+    "myUrl": "http://httpbin.org/get"
+});
+
+class Sample{
+    @httpRequest("@setting:myUrl?s={0}")
+    getSample(search){
+    }
+}
+```
+
+Parameter options is optional and can contains the struct bellow:
+```javascript
+{
+      method: "get", //method can be get, post, head, put, update, delete etc (get as default)
+      responseType: "text", //responseType can be text or json (text as default)
+      contentType: "json", //contentType can be text or json (json as default)
+      //can be passed headers ({} as default)
+      headers: {
+        "MyHeaderName": "MyHeaderValue",
+        "MyHeaderName2": "{0}", //use arguments index 0 as value
+        "MyHeaderName3": "{headerParam}", //use property headerParam of arguments passed
+      }
+}
+```
+### @httpGet(url: string, options: object)
+Just a shortcut for httpRequest with default method as get.
+
+### @httpPost(url: string, options: object)
+Just a shortcut for httpRequest with default method as post.
