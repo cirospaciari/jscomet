@@ -1,4 +1,4 @@
-import { Controller } from './libs/jscomet.core';
+import { Controller } from 'jscomet.core';
 
 class HomeController extends Controller{
 	

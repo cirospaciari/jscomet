@@ -2,7 +2,7 @@ global.JSComet = require('./libs/jscomet')['default'];
 import * as cluster from 'cluster';
 import * as os from 'os';
 import * as config from "./config.json";
-import { JSCometApp, BlissViewEngine, MVCRouteEngine } from "./libs/jscomet.core";
+import { JSCometApp, BlissViewEngine, MVCRouteEngine } from "jscomet.core";
 
 //create forks for best performance
 if(cluster.isMaster)
