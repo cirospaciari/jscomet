@@ -48,6 +48,7 @@ Command line:
           add class MyProject models\myModelClass singleton
        
 
+### For documentation, examples and more details [click here](https://gitlab.com/cirospaciari/jscomet/tree/master/docs)
 # Transpiler Features
 
 main.js
