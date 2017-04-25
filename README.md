@@ -25,7 +25,7 @@ How use:
 
 Project types available: app, console, library, web. (Desktop coming soon)
 
-For documentation, examples and more details [click here](https://gitlab.com/cirospaciari/jscomet/tree/master/docs)
+For documentation, examples and more details [click here](https://github.com/cirospaciari/jscomet/tree/master/docs)
 
 Command line:
 
@@ -48,7 +48,7 @@ Command line:
           add class MyProject models\myModelClass singleton
        
 
-### For documentation, examples and more details [click here](https://gitlab.com/cirospaciari/jscomet/tree/master/docs)
+### For documentation, examples and more details [click here](https://github.com/cirospaciari/jscomet/tree/master/docs)
 # Transpiler Features
 
 main.js
