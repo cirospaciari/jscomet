@@ -59,6 +59,25 @@ You can routing using routes.json file in project, you can specify the http type
 	}
 }
 ```
+### SSL
+Configurate a ssl is easy you just need to add a "ssl" section in config.json file and inform key and certificate files.
+
+```json
+{
+	"session": {
+		"name": "sessionId",
+		"secret" : "3326b169-a39c-9bab-8303-200a70a2876f",
+		"maxAge": 1800000
+	}, 
+	"ssl":{
+		"key": "./keys/private.key",
+		"certificate" : "./keys/certificate.pem"
+	},
+	"port": 8443,
+	"publicDir": "/assets"
+}
+```
+
 # class Controller
  
 The Controller class is the base type for any Controller and contains all MVC features and helpers implemented in jscomet. All actions can return a ActionResult or a Promise for async results.
