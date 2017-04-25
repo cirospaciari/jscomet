@@ -16,6 +16,10 @@ module JSCometWeb{
 		layout: string = "layout";
 		viewRenderer: ViewRenderer;
 		
+		view(){
+			return this.view(null, null);
+		}
+		
 		view(model){
 			return this.view(null, model);
 		}

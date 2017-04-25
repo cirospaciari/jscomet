@@ -94,7 +94,13 @@ if(value !== null && !(value instanceof ViewRenderer))
 		___private___.z____title =  "";
 		___private___.z____layout =  "layout";
 		___private___.z____viewRenderer = null;
-___self___.view =  (function view(){if(arguments.length == 1){
+___self___.view =  (function view(){if(arguments.length == 0){
+  var  z____return = (function view(){
+        
+			return this.view(null, null);
+		}).apply(typeof ___self___ == 'undefined' ? this : ___self___, arguments);
+return z____return;}
+if(arguments.length == 1){
   var  z____return = (function view(model){
         
 			return this.view(null, model);
