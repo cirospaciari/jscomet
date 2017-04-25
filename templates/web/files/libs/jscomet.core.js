@@ -1304,7 +1304,7 @@ ___self___.match =  (function match(request,  response){
 				controller.query = query;
 				controller.body = request.body || {};
 				controller.files = request.files;
-				controller.session = request.session;
+				controller.session = request.session || {};
 				
 				for(var j in parameters)
 					if(j != "controller" && j != "action")
@@ -1415,22 +1415,40 @@ JSComet.defineProperty(___private___, { enumerable: false, key: 'app', get: (fun
 		___private___.z____environment = null;
 		___private___.z____app = undefined;
 		___private___.config = undefined;
+		___private___.appDirectory = undefined;
 ___self___.run =  (function run(){
   var  z____return = (function run(){
         
 			var config = ___private___.config;
 			var app = ___private___.app;
+			var directory = ___private___.appDirectory;
 			return new Promise(((function(_this){ return (function(){return (function (resolve){
-				var server = null;
-				if(config.port){
-					server = app.listen(config.port);
-					
+				
+				if(config.ssl){
+					try{
+						
+						var options = {
+						  key: fs.readFileSync(path.join(directory, config.ssl.key), "utf8"),
+						  cert: fs.readFileSync(path.join(directory, config.ssl.certificate), "utf8")
+						};
+						var https = require("https");
+						var server = https.createServer(options, app).listen(config.port || 443, function() {
+							 resolve(server.address().port);
+						});
+					}catch(ex){
+						console.log(ex);
+					}
 				}else{
-					server = app.listen();
-				}	
-				server.on('listening', function() {
-					 resolve(server.address().port);
-				});
+					var server = null;
+					if(config.port){
+						server = app.listen(config.port);
+					}else{
+						server = app.listen();
+					}	
+					server.on('listening', function() {
+						 resolve(server.address().port);
+					});
+				}
 			}).apply(_this,arguments)});})(this)));
 			
 			
@@ -1451,13 +1469,13 @@ if(routeEngine !== null && !(routeEngine instanceof RouteEngine))
 		 ___private___.app = app;
 		 ___private___.config	 = config;
 			var directory = routeEngine.appDirectory;
-
+		 ___private___.appDirectory = directory;
 			app.use(session({
-							secret: config.session.secret, 
-							name : config.session.name, 
-							resave: true, 
-							saveUninitialized: true,
-							cookie: { maxAge: config.session.maxAge }
+					secret: config.session.secret, 
+					name : config.session.name, 
+					resave: true, 
+					saveUninitialized: true,
+					cookie: { maxAge: config.session.maxAge }
 			}));
 							
 			app.use(compression());
