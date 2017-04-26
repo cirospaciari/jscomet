@@ -10,11 +10,11 @@
 
 
 # Web Project Type
- 
+
 The Web project type is a easy way of implement MVC using express.
 
 ### Command line tools
- 
+
 ##### Creating a new project
 To create a new project you need to create a solution first, after execute the command the default struct will be create.
 ```sh
@@ -79,7 +79,7 @@ Configurate a ssl is easy you just need to add a "ssl" section in config.json fi
 		"name": "sessionId",
 		"secret" : "3326b169-a39c-9bab-8303-200a70a2876f",
 		"maxAge": 1800000
-	}, 
+	},
 	"ssl":{
 		"key": "./keys/private.key",
 		"certificate" : "./keys/certificate.pem"
@@ -90,13 +90,13 @@ Configurate a ssl is easy you just need to add a "ssl" section in config.json fi
 ```
 
 # class Controller
- 
+
 The Controller class is the base type for any Controller and contains all MVC features and helpers implemented in jscomet. All actions can return a ActionResult or a Promise for async results.
 ### Attributes
- 
+
 ##### title: string
 Page Title can be set on action executions or in Controller constructor.
- 
+
 ```javascript
 class HomeController extends Controller{
 	index(){
@@ -107,12 +107,12 @@ class HomeController extends Controller{
 ```
 
 ##### layout: string
- Master page used for rendering views content by default value is "layout", this will look in directories: 
+ Master page used for rendering views content by default value is "layout", this will look in directories:
  * /views/layout.html
  * /views/shared/layout.html
- 
+
  Like title attribute can be set on action execution or in Controller constructor.
- 
+
  ```javascript
 class AboutController extends Controller{
 	async index(){
@@ -123,7 +123,7 @@ class AboutController extends Controller{
 }
 ```
 
-##### params: object 
+##### params: object
 This property is an object containing properties mapped to the named route “parameters” and query string parameters. For example, if you have the route /user/{name}, then the “name” property is available as this.params.name or in action parameters (but need to be in order). This object defaults to {}.
 
  ```javascript
@@ -136,7 +136,7 @@ class UserController extends Controller{
 }
 ```
 
-##### query: object 
+##### query: object
 This property is an object containing all query string parameters. This object defaults to {}.
 
  ```javascript
@@ -170,7 +170,7 @@ class ProductsController extends Controller{
 
 ##### request: object ([express](http://expressjs.com/pt-br/4x/api.html#req))
 The request property represents the HTTP request and has properties for the request query string, parameters, body, HTTP headers, and so on. You can access query string information, cookies and more see more in [Express documentation](http://expressjs.com/pt-br/4x/api.html#req).
- 
+
  ```javascript
 class UserController extends Controller{
 	async index(){
@@ -183,7 +183,7 @@ class UserController extends Controller{
 ```
 ##### response: object ([express](http://expressjs.com/pt-br/4x/api.html#res))
 The resquest property represents the HTTP response that an Express app sends when it gets an HTTP request see more in [Express documentation](http://expressjs.com/pt-br/4x/api.html#res).
- 
+
  ```javascript
 class UserController extends Controller{
 	async login(){
@@ -192,7 +192,7 @@ class UserController extends Controller{
 		var model = await User.validateLogin(username, password);
 		if(!model.success)
 		    return this.view(model);
-		    
+
 		if(model.isAdmin){
 		     //save or access cookie information
 		    this.response.cookie('adminToken', model.token, { path: '/admin' });
@@ -205,7 +205,7 @@ class UserController extends Controller{
 ### Functions
 
 ##### view(model: object)
-Return a ActionResult object that renders a view to the response. If your action/function has a name as "index" and your controller as a name "HomeController" this will look in directories: 
+Return a ActionResult object that renders a view to the response. If your action/function has a name as "index" and your controller as a name "HomeController" this will look in directories:
  * /views/home/index.html
  * /views/shared/index.html
 
@@ -219,7 +219,7 @@ class HomeController extends Controller{
 ```
 
 ##### view(viewName: string, model: object)
-Return a ActionResult object that renders a view to the response. If you pass has viewName "about" and your controller as a name "HomeController" this will look in directories: 
+Return a ActionResult object that renders a view to the response. If you pass has viewName "about" and your controller as a name "HomeController" this will look in directories:
  * /views/home/about.html
  * /views/shared/about.html
 
@@ -364,7 +364,7 @@ class Test{
     name: string = "ciro";
     @abstract
     surname: string;
-    
+
     @abstract
     getMessage(){
     }
@@ -392,20 +392,20 @@ class Test{
     //throw a exception: This function will be removed in future versions. DON'T USE THIS!
     @deprecated("This function will be removed in future versions. DON'T USE THIS!", { error: true })
     test(code: int){
-    
+
     }
     //log a warning: This function will be removed in future versions.
     @deprecated
     test2(code: int){
-    
+
     }
     //log a warning: This function will be removed in future versions. See http://mysite.com/deprecated/test3 for more details.
     @deprecated("This function will be removed in future versions. DON'T USE THIS!", { url: "http://mysite.com/deprecated/test3" })
     test3(code: int){
-    
+
     }
 }
-//sealed decorators do not allow this class to be inherited any more 
+//sealed decorators do not allow this class to be inherited any more
 @sealed
 class Test2 extends Test{
     name: string = "ciro";
@@ -433,6 +433,10 @@ class User{
 
 ### @httpRequest(url: string, options: object)
 HttpRequest decorator is a helper to consume Rest API`s. If a function use this decorator the function will return a Promise and hers body only will be called if the request is NOT successfully.
+To use this decorator in node applications you need first install the request package:
+```sh
+npm install request
+```
 Parameter url contains a url format to execute a http request:
 
 ```javascript
@@ -511,7 +515,7 @@ var sampleTemplateFunction = url `/client/?email=${sampleClient.email}`;
 
 ```javascript
 module SampleModule {
-	//you can use import and export 
+	//you can use import and export
 	//https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Statements/export
 	export var UserType = {
 		Default : 0,
@@ -553,7 +557,7 @@ module SampleModule {
 		you can use more than one type, for example for int nullable you can use:
 		age: int | null;
 
-	    For string, number, boolean, object, function e symbol, CANT be undefined and only boolean CANT be null 
+	    For string, number, boolean, object, function e symbol, CANT be undefined and only boolean CANT be null
 
 		Typed Array shortcuts:
 
@@ -582,7 +586,7 @@ module SampleModule {
 		null: only accept null (can be used for create nullable values like: int | null)
 		 */
 
-	
+
 		constructor(name : string, surname : string, email : string, password : string) {
 			this.name = name;
 			this.email = email;
@@ -590,7 +594,7 @@ module SampleModule {
 			this.surname = surname;
 		}
 
-	
+
 		get fullname() : string {
 			return `${this.name} ${this.surname}`;
 		}
@@ -691,12 +695,12 @@ export default SampleModule;
 ### Sub Classes:
 
 ```javascript
-class MyClass { 
+class MyClass {
 	class MySubClass{//public
-				
+
 	}
 	private class MyPrivateSubClass{//private
-			
+
 	}
 	public class MyPublicSubClass{//public
 	}
