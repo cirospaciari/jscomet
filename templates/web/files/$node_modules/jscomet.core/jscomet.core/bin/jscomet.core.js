@@ -520,7 +520,7 @@ if((viewName != null) &&(typeof viewName != 'string'))
 			var body = this.partial(viewName, model);
 			
 			var layoutName = controller.layout + ".html";
-			var layoutDir =  path.join(this.directory, "/views/" + this.controllerName + "/" + layoutName);
+			var layoutDir =  path.join(this.directory, "/views/" + (this.controllerName || "").toLowerCase() + "/" + layoutName);
 			if(!fs.existsSync(layoutDir)){
 				layoutDir = path.join(this.directory, "/shared/" + layoutName);
 				if(!fs.existsSync(layoutDir)){
@@ -558,7 +558,7 @@ if((viewName != null) &&(typeof viewName != 'string'))
         
 
 			var viewName = (viewName || this.actionName) + ".html";
-			var viewDir = path.join(this.directory, "/views/" + this.controllerName + "/" + viewName);
+			var viewDir = path.join(this.directory, "/views/" + (this.controllerName || "").toLowerCase() + "/" + viewName);
 			if(!fs.existsSync(viewDir)){
 				viewDir = path.join(this.directory, "/shared/" + viewName);
 				if(!fs.existsSync(viewDir)){
