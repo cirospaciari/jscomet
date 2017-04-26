@@ -1,9 +1,6 @@
-[![npm package](https://nodei.co/npm/jscomet.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/jscomet/)
+[![npm package](https://nodei.co/npm/jscomet.png?downloads=true&downloadRank=true?maxAge=30)](https://nodei.co/npm/jscomet/)
 
-[![NPM version](https://img.shields.io/npm/v/jscomet.svg)](https://img.shields.io/npm/v/jscomet.svg)
-[![NPM License](https://img.shields.io/npm/l/jscomet.svg)](https://img.shields.io/npm/l/jscomet.svg)
-[![NPM Downloads](https://img.shields.io/npm/dm/jscomet.svg?maxAge=43200)](https://img.shields.io/npm/dm/jscomet.svg?maxAge=43200)
-
+[![NPM version](https://img.shields.io/npm/v/jscomet.svg)](https://img.shields.io/npm/v/jscomet.svg) [![NPM License](https://img.shields.io/npm/l/jscomet.svg)](https://img.shields.io/npm/l/jscomet.svg) [![Downloads](https://img.shields.io/npm/dt/jscomet.svg?maxAge=43200)](https://img.shields.io/npm/dt/jscomet.svg?maxAge=60) [![ISSUES](https://img.shields.io/github/issues/cirospaciari/jscomet.svg?maxAge=60)](https://img.shields.io/github/issues/cirospaciari/jscomet.svg?maxAge=60)
 
 JSComet is a easy way of creating apps with OO class like ES6/TypeScript/Babel features with truly private vars and functions, type validations, function overloads, all in runtime and can create libraries like browserify and reference this in projects.
 

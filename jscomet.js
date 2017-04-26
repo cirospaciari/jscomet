@@ -4,9 +4,9 @@ var glob = require('glob');
 var fs = require('fs');
 var path = require('path');
 var JSComet = require("./core/jscomet.js")["default"];
-var ncp = require('ncp').ncp; 
+var ncp = require('ncp').ncp;
 ncp.limit = 16;
-							
+
 global.JSComet = JSComet;
 
 var solutionDirectory = "./";
@@ -26,11 +26,11 @@ function create(projectType, projectName){
 			return false;
 		}
 		var solutionJSON = fs.readFileSync(path.join(process.env.JSCOMET_PATH, "./default_solution.json"), 'utf8');
-	
+
 		fs.writeFileSync(solutionPath, solutionJSON, { flags: 'w' }, 'utf8');
 		console.log("The solution has been successfully created!")
 		return true;
-		
+
 	}else if(projectType && projectName){
 		if(!fs.existsSync(solutionPath)) {
 			console.error("You must create a solution to add a project");
@@ -49,13 +49,13 @@ function create(projectType, projectName){
 		}
 
 		try{
-			
+
 			var template = require(path.join(process.env.JSCOMET_PATH, "templates", projectType, "template.js"))["default"];
 			var args = [solutionPath, projectName];
 			for(var i = 2; i < arguments.length; i++){
 				args.push(arguments[i]);
 			}
-			
+
 			var promise = getAsync(template.create.apply(template, args));
 			promise.then(function(project){
 				try{
@@ -69,21 +69,21 @@ function create(projectType, projectName){
 					console.error("Failed to save project in solution");
 				}
 			});
-			
+
 		}catch(ex){
 			if(ex.code === 'MODULE_NOT_FOUND'){
 				console.error("Project type not found");
 			}else
 				console.error(ex);
 		}
-		
+
 	}else{
 		console.error("you must enter the project type and a project name");
 		return false;
 	}
 }
 function build(projectName){
-	
+
 	if(projectName){
 		if(!fs.existsSync(solutionPath)) {
 			console.error("You must create a solution to build a project");
@@ -107,16 +107,16 @@ function build(projectName){
 				break;
 			}
 		}
-		
+
 		if(!project){
 			console.error('Project "' + projectName + '" does not exist');
 			return false;
 		}
-		
+
 		if(!clean(projectName))
 			return false;
-	
-		
+
+
 		var buildPromise = new Promise(function(resolve){
 			function buildProject(){
 				try{
@@ -124,15 +124,15 @@ function build(projectName){
 					if(fs.existsSync(beforeBuild)){
 						require(beforeBuild);
 					}
-					
+
 					var template = require(path.join(process.env.JSCOMET_PATH, "templates", project.Type, "template.js"))["default"];
-					
+
 					var args = [solutionPath, projectName];
-					
+
 					for(var i = 2; i < arguments.length; i++){
 						args.push(arguments[i]);
 					}
-					
+
 					var promise = getAsync(template.build.apply(template, args));
 					promise.then(function(success){
 						try{
@@ -142,11 +142,11 @@ function build(projectName){
 								var afterBuild = path.join(solutionDirectory, projectName, 'after-build.js');
 								if(fs.existsSync(afterBuild))
 									require(afterBuild);
-								
+
 							}
 							resolve(success);
 						}catch(ex){
-							
+
 							console.error("Failed to build project");
 							resolve(false);
 						}
@@ -162,11 +162,11 @@ function build(projectName){
 					return false;
 				}
 			}
-			
+
 			function nextReference(){
-				
+
 				if(project.References){
-				
+
 					var reference = project.References.shift();
 					if(reference){
 						var referenceProject = null;
@@ -176,29 +176,29 @@ function build(projectName){
 								break;
 							}
 						}
-						
+
 						if(!referenceProject){
 							console.error('Reference "' + reference.Project + '" does not exist');
 							return false;
 						}
-						
+
 						getAsync(build(referenceProject.Name)).then(function(success){
 							if(success){
 								var outPath = path.join(solutionDirectory, project.Source, reference.Out);
 								ensureDirectoryExistence(outPath);
-								ncp(path.join(solutionDirectory, referenceProject.Bin), 
-									outPath, 
+								ncp(path.join(solutionDirectory, referenceProject.Bin),
+									outPath,
 									function (err) {
 									 if (err) {
 									   console.error(err);
 									   resolve(false);
 									   return;
 									 }
-									 
+
 									 setTimeout(function(){
 										var subLibs = path.join(solutionDirectory, project.Source,	reference.Out, "./libs");
 										deleteFolderRecursive(subLibs);
-									 
+
 										nextReference();
 									 },10);
 								});
@@ -218,16 +218,16 @@ function build(projectName){
 			}
 			nextReference();
 		});
-		
+
 		return buildPromise;
-		
+
 	}else{
 		console.error("you must enter the project name");
 		return false;
 	}
 }
 function clean(projectName){
-	
+
 	if(!fs.existsSync(solutionPath)) {
 		console.error("You must create a solution to clean");
 		return false;
@@ -239,7 +239,7 @@ function clean(projectName){
 		console.error("Failed to load solution");
 		return false;
 	}
-		
+
 	if(projectName){
 		if(!fs.existsSync(path.join(solutionDirectory, projectName))) {
 			console.error('Project "' + projectName + '" does not exist');
@@ -251,7 +251,7 @@ function clean(projectName){
 				project = solution.Projects[i];
 			}
 		}
-		
+
 		if(!project){
 			console.error('Project "' + projectName + '" does not exist');
 			return false;
@@ -261,7 +261,7 @@ function clean(projectName){
 		console.log(project.Name + " was clear");
 		return true;
 	}else{
-		
+
 		console.log("Cleaning solution...");
 		for(var i = 0; i < solution.Projects.length; i++){
 			project = solution.Projects[i];
@@ -276,12 +276,12 @@ function reference(method, projectName, projectReference){
 		console.log("Enter the project name and the reference name");
 		return false;
 	}
-	
+
 	if(!fs.existsSync(solutionPath)) {
 		console.error("You must create a solution to add/remove a reference");
 		return false;
 	}
-	
+
 	var solution = null;
 	try{
 		solution = require(solutionPath);
@@ -299,12 +299,12 @@ function reference(method, projectName, projectReference){
 			project = solution.Projects[i];
 		}
 	}
-	
+
 	if(!project){
 		console.error('Project "' + projectName + '" does not exist');
 		return false;
 	}
-	
+
 	if(!fs.existsSync(path.join(solutionDirectory, projectReference))) {
 		console.error('Project "' + projectReference + '" does not exist');
 		return false;
@@ -315,16 +315,16 @@ function reference(method, projectName, projectReference){
 			reference = solution.Projects[i];
 		}
 	}
-	
+
 	if(!reference){
 		console.error('Project "' + projectReference + '" does not exist');
 		return false;
 	}
-	
-	
+
+
 	switch(method){
 		case "add":
-				
+
 			if(projectName == projectReference){
 				console.log("You can not reference a project himself... duh!");
 				return false;
@@ -337,7 +337,7 @@ function reference(method, projectName, projectReference){
 						return true;
 					}
 				}
-				
+
 			}
 			if(reference.References)
 			{
@@ -347,7 +347,7 @@ function reference(method, projectName, projectReference){
 						return false;
 					}
 				}
-				
+
 			}
 			project.References = project.References || [];
 			project.References.push({
@@ -365,10 +365,10 @@ function reference(method, projectName, projectReference){
 			}
 		break;
 		case "remove":
-			
+
 			var find = false;
 			var newReferences = [];
-			
+
 			if(project.References)
 			{
 				for(var i in project.References){
@@ -385,7 +385,7 @@ function reference(method, projectName, projectReference){
 				return true;
 			}
 			project.References = newReferences;
-			
+
 			try{
 				var solutionJSON = JSON.stringify(solution, null, 4);
 				fs.writeFileSync(solutionPath, solutionJSON, { flags: 'w' }, 'utf8');
@@ -395,7 +395,7 @@ function reference(method, projectName, projectReference){
 				console.error("Failed to save project in solution");
 				return false;
 			}
-			
+
 		break;
 		default:
 			console.log("Invalid method. Available options: add, remove");
@@ -470,27 +470,27 @@ function run(projectName){
 				project = solution.Projects[i];
 			}
 		}
-		
+
 		if(!project){
 			console.error('Project "' + projectName + '" does not exist');
 			return false;
 		}
-		
+
 		try{
-			
+
 			var template = require(path.join(process.env.JSCOMET_PATH, "templates", project.Type, "template.js"))["default"];
 			var args = [solutionPath, projectName];
 			for(var i = 2; i < arguments.length; i++){
 				args.push(arguments[i]);
 			}
-			
+
 			getAsync(build(projectName)).then(function(success){
 				if(success){
 					var promise = getAsync(template.run.apply(template, args));
 				}
 			});
-			
-			
+
+
 		}catch(ex){
 
 			if(ex.code === 'MODULE_NOT_FOUND'){
@@ -498,7 +498,7 @@ function run(projectName){
 			}else
 				console.error(ex);
 		}
-		
+
 	}else{
 		console.error("you must enter the project name");
 		return false;
@@ -528,20 +528,20 @@ function publish(projectName, outDirectory){
 				project = solution.Projects[i];
 			}
 		}
-		
+
 		if(!project){
 			console.error('Project "' + projectName + '" does not exist');
 			return false;
 		}
-		
+
 		try{
-			
+
 			var template = require(path.join(process.env.JSCOMET_PATH, "templates", project.Type, "template.js"))["default"];
 			var args = [solutionPath, projectName];
 			for(var i = 2; i < arguments.length; i++){
 				args.push(arguments[i]);
 			}
-			
+
 			getAsync(build(projectName)).then(function(success){
 				if(success){
 					console.log("Publishing: " + project.Name + "...");
@@ -551,13 +551,13 @@ function publish(projectName, outDirectory){
 							return;
 						}
 						outDirectory = path.resolve(solutionDirectory, outDirectory);
-						
+
 						ensureDirectoryExistence(outDirectory);
 						deleteFolderRecursive(outDirectory);
 						ensureDirectoryExistence(outDirectory);
-						
-						ncp(path.join(solutionDirectory, project.Bin), 
-							outDirectory, 
+
+						ncp(path.join(solutionDirectory, project.Bin),
+							outDirectory,
 							function (err) {
 							if (err) {
 							  console.error(err);
@@ -570,36 +570,36 @@ function publish(projectName, outDirectory){
 					});
 				}
 			});
-			
-			
+
+
 		}catch(ex){
 			if(ex.code === 'MODULE_NOT_FOUND'){
 				console.error("Project type not found");
 			}else
 				console.error(ex);
 		}
-		
+
 	}else{
 		console.error("you must enter the project name and out directory");
 		return false;
 	}
-	
+
 }
 
 function customCommandOrMenu(customCommand, args){
-	
+
 	projectName = args[0];
-	
+
 	if(!projectName){
 		printMenu();
 		return false;
 	}
-	
+
 	if(!fs.existsSync(solutionPath)) {
 		printMenu();
 		return false;
 	}
-	
+
 	var solution = null;
 	try{
 		solution = require(solutionPath);
@@ -618,12 +618,12 @@ function customCommandOrMenu(customCommand, args){
 			break;
 		}
 	}
-	
+
 	if(!project){
 		printMenu();
 		return false;
 	}
-	
+
 	var templatePath = path.join(process.env.JSCOMET_PATH, "templates", project.Type, "template.js");
 	if(!fs.existsSync(solutionPath)) {
 		printMenu();
@@ -633,12 +633,12 @@ function customCommandOrMenu(customCommand, args){
 	try{
 		template = require(templatePath)["default"];
 	}catch(ex){}
-	
+
 	if(!template || !template[customCommand]){
 		printMenu();
 		return false;
 	}
-	
+
 	try{
 		args = [solutionPath, projectName];
 		for(var i = 2; i < arguments.length; i++){
@@ -659,23 +659,23 @@ function printMenu(){
 	console.log("\tcreate solution", 						"\t\t\t", "create a empty solution file");
 	console.log("\tcreate %PROJECT_TYPE% %PROJECT_NAME%", 	"\t", "create a project");
 	console.log("\tremove %PROJECT_NAME%", 					"\t\t\t", "remove a project");
-	console.log("\trun %PROJECT_NAME%",  					"\t\t\t",  "run a project"); 
+	console.log("\trun %PROJECT_NAME%",  					"\t\t\t",  "run a project");
 	console.log("\tpublish %PROJECT_NAME% %OUT_DIRECTORY%", " ", "publish a project to folder");
 	console.log("");
 	console.log("\treference add %PROJECT_NAME% %REFERENCE_PROJECT_NAME%",		"\t\t", "add project reference");
 	console.log("\treference remove %PROJECT_NAME% %REFERENCE_PROJECT_NAME%",		"\t", "remove project reference");
-	console.log("\tadd %FILE_TEMPLATE% %PROJECT_NAME% %FILE_PATH%",  "\t\t\t",  "add a file"); 
+	console.log("\tadd %FILE_TEMPLATE% %PROJECT_NAME% %FILE_PATH%",  "\t\t\t",  "add a file");
 	console.log("\t Default Options:");
-	console.log("\t  add html MyProject myHTMLFile"); 
-	console.log("\t  add xml MyProject myXMLFile"); 
-	console.log("\t  add js MyProject myJSFile"); 
-	console.log("\t  add css MyProject myJSFile"); 
-	console.log("\t  add class MyProject models\\myModelClass"); 
-	console.log("\t  add class MyProject models\\myModelClass extended myModelBase"); 
-	console.log("\t  add class MyProject models\\myModelClass singleton"); 
-	console.log("\t  add controller MyProject myControllerClass"); 
-	console.log("\t  add view MyProject user\\myView"); 
-	console.log("\t  add layout MyProject myLayout"); 
+	console.log("\t  add html MyProject myHTMLFile");
+	console.log("\t  add xml MyProject myXMLFile");
+	console.log("\t  add js MyProject myJSFile");
+	console.log("\t  add css MyProject myJSFile");
+	console.log("\t  add class MyProject models\\myModelClass");
+	console.log("\t  add class MyProject models\\myModelClass extended myModelBase");
+	console.log("\t  add class MyProject models\\myModelClass singleton");
+	console.log("\t  add controller MyProject myControllerClass");
+	console.log("\t  add view MyProject user\\myView");
+	console.log("\t  add layout MyProject myLayout");
 }
 
 function add(templateName, projectName, fileName){
@@ -695,7 +695,7 @@ function add(templateName, projectName, fileName){
 			console.error('Project "' + projectName + '" does not exist');
 			return false;
 		}
-	
+
 		var project = null;
 		for(var i in solution.Projects){
 			if(solution.Projects[i].Name == projectName){
@@ -703,14 +703,14 @@ function add(templateName, projectName, fileName){
 				break;
 			}
 		}
-		
+
 		if(!project){
 			console.error('Project "' + projectName + '" does not exist');
 			return false;
 		}
-		
+
 		try{
-			
+
 			var templateFilePath = path.join(process.env.JSCOMET_PATH, "templates", project.Type, "file-templates", templateName, "template.js");
 			if(!fs.existsSync(path.join(templateFilePath))) {
 				templateFilePath = path.join(process.env.JSCOMET_PATH, "file-templates", templateName, "template.js");
@@ -720,19 +720,19 @@ function add(templateName, projectName, fileName){
 				return false;
 			}
 			var fileTemplate = require(templateFilePath)["default"];
-			
+
 			//var template = require()["default"];
 			var args = [solutionPath, projectName];
 			for(var i = 2; i < arguments.length; i++){
 				args.push(arguments[i]);
 			}
-			
+
 			return fileTemplate.add.apply(fileTemplate, args);
 		}catch(ex){
 			console.log(ex);
 			console.error("Failed to add file template");
 		}
-	
+
 	}else{
 		console.error("you must enter the template, project name and file name");
 		return false;
@@ -747,7 +747,7 @@ function main(){
 	switch(args[1]){
 		case "v":
 		case "version":
-			console.log("v1.0.18");
+			console.log("v1.0.21");
 		break;
 		case "build":
 			build.apply(this, args.slice(2));
@@ -777,7 +777,7 @@ function main(){
 			customCommandOrMenu(args[1], args.slice(2));
 		break;
 	}
-	
+
 }
 
 var deleteFolderRecursive = function(path) {
@@ -801,5 +801,5 @@ var ensureDirectoryExistence = function(filePath) {
 	  ensureDirectoryExistence(dirname);
 	  fs.mkdirSync(dirname);
 };
-	
+
 main();
