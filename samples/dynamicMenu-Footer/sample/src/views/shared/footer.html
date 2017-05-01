@@ -1,0 +1,8 @@
+@!(model)
+<footer>
+   <ul>
+	@for(var i in model){
+	    <li><a href="@(model[i].link)">@(model[i].text)</a></li>
+	}
+	</ul>
+</footer>

@@ -1,0 +1,14 @@
+@!(title,body, html)
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>@title</title>
+  </head>
+  <body>
+	@html.partial("menu", html.viewBag.menu)
+	
+    @body
+	
+	@html.partial("footer", html.viewBag.footer)
+  </body>
+</html>

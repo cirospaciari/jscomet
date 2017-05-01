@@ -228,7 +228,7 @@ module JSCometWeb{
 			var viewName = (viewName || this.actionName) + ".html";
 			var viewDir = path.join(this.directory, "/views/" + (this.controllerName || "").toLowerCase() + "/" + viewName);
 			if(!fs.existsSync(viewDir)){
-				viewDir = path.join(this.directory, "/shared/" + viewName);
+				viewDir = path.join(this.directory, "/views/shared/" + viewName);
 				if(!fs.existsSync(viewDir)){
 					throw viewName + " not found.";
 				}
