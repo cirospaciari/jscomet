@@ -368,7 +368,6 @@ This function is like view function but instead return ActionResult returns the 
 
 ##### partial(viewName: string, model) : string
 This function is like render function but instead return entire html, return view without layout html, viewName is optional. This function can be used in view html to render views and turn the page more modular.
-
 ```html
 @!(model, html)
 <h1>@model.message</h1>
@@ -376,7 +375,58 @@ This function is like render function but instead return entire html, return vie
     <p>@html.partial('person', model.persons[i])</p>
 }
 ```
+##### onActionExecuting(args: object): Promise
+This function will be called before a action execute and can be used to pass global values between actions. Can be used to made menus, login validations, dynamic metatags, scripts, bundles etc. The exemple bellow can be implemented in a base controller for keep this in one place.
 
+Example passing value to viewBag:
+```javascript
+class HomeController extends Controller{
+
+   async onActionExecuting(args){
+       //get menu information
+        this.viewBag.menu = async Menu.getMenuOptions();
+   }
+	async index(){
+	  
+        return this.view();
+	}
+}
+```
+Rendering menu passed in view bag in layout/view:
+```html
+@!(title, body, html)
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>@title</title>
+  </head>
+  <body>
+   <ul>
+	@for(var i in html.viewBag.menu){
+	    <li><a href="@html.viewBag.menu[i].link">@html.viewBag.menu[i].text</a></li>
+	}
+	</ul>
+    @body
+  </body>
+</html>
+```
+##### onActionExecuted(args: object): Promise
+This function will be called before a action execute and can be used to intercept returned values, redirects etc.
+```javascript
+class HomeController extends Controller{
+
+   async onActionExecuted(args){
+       //get menu information
+        //args.viewName
+        //args.controllerName
+        //args.actionResult
+   }
+	async index(){
+	  
+        return this.view();
+	}
+}
+```
 # Decorators
 JSComet support decorators to help consume Rest API, cache, log, validation and more features. To use this features you need to install [jscomet.decorators](https://www.npmjs.com/package/jscomet.decorators) package in your project src folder.
 ```sh
