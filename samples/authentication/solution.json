@@ -1,0 +1,29 @@
+{
+    "Projects": [
+        {
+            "Name": "sample",
+            "Source": "sample/src",
+            "Bin": "sample/bin",
+            "IgnorePathsOnTranslate": [
+                "libs",
+                "node_modules",
+                "files/assets/js"
+            ],
+            "Type": "web",
+            "MainFile": "main.js"
+        }
+    ],
+    "Options": {
+        "translateModule": true,
+        "translateExports": true,
+        "translateImports": true,
+        "translateClass": true,
+        "translateStringTemplates": true,
+        "translateArrowFunctions": true,
+        "translateLetAndConst": true,
+        "translateFunctions": true,
+        "translateTypedArrays": true,
+        "translateAsyncFunctions": true,
+        "translateCodeAfterImport": false
+    }
+}

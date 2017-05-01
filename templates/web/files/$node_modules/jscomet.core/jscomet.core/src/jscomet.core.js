@@ -64,6 +64,7 @@ module JSCometWeb{
 		redirect(url, status){
 			status = status || 302;
 			return { 
+				contentType: "redirect",
 				result: url, 
 				status: status
 			};

@@ -1,0 +1,21 @@
+{
+	"home": {
+		"url": "/",
+		"controller": "Home",
+		"action": "index",
+		"type": ["get", "post"]
+	},
+	"default": {
+		"url": "/{controller}/{action}/",
+		"type": ["get", "post"]
+	},
+	"defaultWithoutAction": {
+		"url": "/{controller}",
+		"action": "index",
+		"type": ["get", "post"]
+	},
+	"defaultWithParameter": {
+		"url": "/{controller}/{action}/{id}",
+		"type": ["get", "post"]
+	}
+}
