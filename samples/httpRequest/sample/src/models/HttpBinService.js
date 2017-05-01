@@ -5,23 +5,23 @@ class HttpBinService{
 
     @httpGet("@settings:httpBinUrl/get?s={0}")
     sampleGet(search){
-      //loga erro caso ocorra (so cai aqui se der erro)
+      //only call function body if a error occur
       //console.error("Error: HttpBinService.sampleGet", httpRequest.getLastError());
-      return {};
+      return {}; //value returned if a error occur
     }
 
     @httpGet("@settings:httpBinUrl/get?name={name}&surname={surname}")
     sampleGetNamedParameters(user){
-      //loga erro caso ocorra (so cai aqui se der erro)
+      //only call function body if a error occur
       //console.error("Error: HttpBinService.sampleGetNamedParameters", httpRequest.getLastError());
-      return {};
+      return {}; //value returned if a error occur
     }
 
     @httpPost("@settings:httpBinUrl/post")
     samplePost(user){
-      //loga erro caso ocorra (so cai aqui se der erro)
+      //only call function body if a error occur
       //console.error("Error: HttpBinService.samplePost", httpRequest.getLastError());
-      return {};
+      return {}; //value returned if a error occur
     }
 }
 
