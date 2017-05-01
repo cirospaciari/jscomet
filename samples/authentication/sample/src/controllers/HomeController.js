@@ -31,14 +31,12 @@ class HomeController extends Controller{
 	//validations are implementeds in ./main.js
 	@userInRule("admin")
 	public admin(){
-		console.log(this);
 		var model = this.session.user;
 		return this.view(model);
 	}
 	
 	@userInRule("user")
 	public user(){
-		console.log(this);
 		var model = this.session.user;
 		return this.view(model);
 	}
