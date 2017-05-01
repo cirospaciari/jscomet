@@ -15,6 +15,7 @@ module JSCometWeb{
 		title: string = "";
 		layout: string = "layout";
 		viewRenderer: ViewRenderer;
+		viewBag: object = {};
 		
 		view(){
 			return this.view(null, null);
@@ -143,6 +144,12 @@ module JSCometWeb{
 				}
 			});
 		}
+		onActionExecuting(args){
+			
+		}
+		onActionExecuted(args){
+			
+		}
 	}
 
 
@@ -171,7 +178,7 @@ module JSCometWeb{
 		
 		directory: string;
 		viewEngine: ViewEngine;
-		
+		viewBag = {};
 		
 		constructor(controller: Controller,
 					controllerName: string, 
@@ -191,19 +198,18 @@ module JSCometWeb{
 		}
 		
 		render(viewName: string, model){
-			
+			this.viewBag = this.controller.viewBag || {};
 			var body = this.partial(viewName, model);
 			
 			var layoutName = controller.layout + ".html";
 			var layoutDir =  path.join(this.directory, "/views/" + (this.controllerName || "").toLowerCase() + "/" + layoutName);
 			if(!fs.existsSync(layoutDir)){
-				layoutDir = path.join(this.directory, "/shared/" + layoutName);
+				layoutDir = path.join(this.directory, "/views/shared/" + layoutName);
 				if(!fs.existsSync(layoutDir)){
 					layoutDir = null;
 				}
 			}
 			var html = "";
-			
 			if(layoutDir)
 				html = this.viewEngine.compile(layoutDir, controller.title, body, this);
 			else
@@ -217,7 +223,7 @@ module JSCometWeb{
 		}
 		
 		partial(viewName: string, model) : string{
-
+			this.viewBag = this.controller.viewBag || {};
 			var viewName = (viewName || this.actionName) + ".html";
 			var viewDir = path.join(this.directory, "/views/" + (this.controllerName || "").toLowerCase() + "/" + viewName);
 			if(!fs.existsSync(viewDir)){
@@ -229,7 +235,6 @@ module JSCometWeb{
 			
 			return this.viewEngine.compile(viewDir, model, this);
 		}
-		
 	}
 	
 	export class ViewEngine{
@@ -583,19 +588,40 @@ module JSCometWeb{
 				try{
 					if(typeof controller[action] != "function")
 						return false;
+				
+					var toAsync = function(result){
+						if(result instanceof Promise){
+							return result;
+						}
+						return new Promise((resolve)=>{
+							resolve(result);
+						});
+					}
 					
-					actionResult = controller[action].apply(controller, result["parameters"]);
-					if(actionResult instanceof Promise) //async response
-					{
-						actionResult
-						//async resolved
-						.then(actionResult => this.processResponse(request, response, actionResult, controller))
+					var executingResult = null;
+					if(typeof controller.onActionExecuting  == "function"){
+						executingResult = controller.onActionExecuting({actionName: action, controllerName: controllerName});
+					}
+					executingResult = toAsync(executingResult);
+					executingResult.then(()=>{
+						actionResult = controller[action].apply(controller, result["parameters"]);
+						actionResult = toAsync(actionResult);
+						actionResult.then(actionResult => {
+							var executedResult = null;
+							var args = {actionName: action, controllerName: controllerName, actionResult: actionResult};
+							if(typeof controller.onActionExecuted  == "function"){
+								executedResult = controller.onActionExecuted(args);
+							}
+							executedResult = toAsync(executedResult);
+							executedResult.then(()=>{
+								this.processResponse(request, response, actionResult, controller);
+							}).catch(error => this.error(error, request, response));
+						})
 						//async error
 						.catch(error => this.error(error, request, response));
 						
-					}else{//sync response
-						this.processResponse(request, response, actionResult, controller);
-					}
+					})
+					.catch(error => this.error(error, request, response));
 
 				}catch(ex){//error
 					this.error(ex, request, response);

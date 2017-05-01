@@ -91,9 +91,20 @@ if(value !== null && !(value instanceof ViewRenderer))
  throw "Controller#viewRenderer - the property 'value' must be 'ViewRenderer'";
  ___private___.z____viewRenderer = value; }).apply(___self___, arguments);}) });
 
+JSComet.defineProperty(___self___, { enumerable: false, key: 'viewBag', get: (function(){ var z____return = (function viewBag(){return ___private___.z____viewBag;}).apply(___self___, arguments);
+ 
+if((z____return != null) &&(typeof z____return != 'object'))
+ throw "Controller#viewBag - the return type must be 'object'";
+ return z____return;}), set:(function(){ return (function viewBag(value){
+
+if((value != null) &&(typeof value != 'object'))
+ throw "Controller#viewBag - the property 'value' must be 'object'";
+ ___private___.z____viewBag = value; }).apply(___self___, arguments);}) });
+
 		___private___.z____title =  "";
 		___private___.z____layout =  "layout";
 		___private___.z____viewRenderer = null;
+		___private___.z____viewBag =  {};
 ___self___.view =  (function view(){if(arguments.length == 0){
   var  z____return = (function view(){
         
@@ -320,6 +331,18 @@ if(executor !== null && !(executor instanceof Function))
 if(z____return !== null && !(z____return instanceof Promise))
  throw "Controller#async - the return type must be 'Promise'";
 return z____return;});
+___self___.onActionExecuting =  (function onActionExecuting(args){
+  var  z____return = (function onActionExecuting(args){
+        
+			
+		}).apply(typeof ___self___ == 'undefined' ? this : ___self___, arguments);
+return z____return;});
+___self___.onActionExecuted =  (function onActionExecuted(args){
+  var  z____return = (function onActionExecuted(args){
+        
+			
+		}).apply(typeof ___self___ == 'undefined' ? this : ___self___, arguments);
+return z____return;});
 		};___defineAllProperties___.call(___self___);
 	var __callThisConstructor__ = function (){
 		(function(){
@@ -498,6 +521,7 @@ if(value !== null && !(value instanceof ViewEngine))
 		___private___.z____actionName = null;
 		___private___.z____directory = null;
 		___private___.z____viewEngine = null;
+		this.viewBag =  {};
 ___self___.render =  (function render(){if(arguments.length == 1){
   var  z____return = (function render(model){
         
@@ -516,19 +540,18 @@ if((viewName != null) &&(typeof viewName != 'string'))
  throw "ViewRenderer#render - the parameter 'viewName' must be 'string'";
 
         
-			
+			this.viewBag = this.controller.viewBag || {};
 			var body = this.partial(viewName, model);
 			
 			var layoutName = controller.layout + ".html";
 			var layoutDir =  path.join(this.directory, "/views/" + (this.controllerName || "").toLowerCase() + "/" + layoutName);
 			if(!fs.existsSync(layoutDir)){
-				layoutDir = path.join(this.directory, "/shared/" + layoutName);
+				layoutDir = path.join(this.directory, "/views/shared/" + layoutName);
 				if(!fs.existsSync(layoutDir)){
 					layoutDir = null;
 				}
 			}
 			var html = "";
-			
 			if(layoutDir)
 				html = this.viewEngine.compile(layoutDir, controller.title, body, this);
 			else
@@ -556,7 +579,7 @@ if((viewName != null) &&(typeof viewName != 'string'))
  throw "ViewRenderer#partial - the parameter 'viewName' must be 'string'";
 
         
-
+			this.viewBag = this.controller.viewBag || {};
 			var viewName = (viewName || this.actionName) + ".html";
 			var viewDir = path.join(this.directory, "/views/" + (this.controllerName || "").toLowerCase() + "/" + viewName);
 			if(!fs.existsSync(viewDir)){
@@ -1324,21 +1347,43 @@ ___self___.match =  (function match(request,  response){
 				try{
 					if(typeof controller[action] != "function")
 						return false;
+				
+					var toAsync = function(result){
+						if(result instanceof Promise){
+							return result;
+						}
+						return new Promise(((function(_this){ return (function(){return (function (resolve){
+							resolve(result);
+						}).apply(_this,arguments)});})(this)));
+					}
 					
-					actionResult = controller[action].apply(controller, result["parameters"]);
-					if(actionResult instanceof Promise) 
-					{
-						actionResult
-						
-						.then(((function(_this){ return (function(){return (function (actionResult){
-    return this.processResponse(request, response, actionResult, controller);}).apply(_this,arguments)});})(this)))
+					var executingResult = null;
+					if(typeof controller.onActionExecuting  == "function"){
+						executingResult = controller.onActionExecuting({actionName: action, controllerName: controllerName});
+					}
+					executingResult = toAsync(executingResult);
+					executingResult.then(((function(_this){ return (function(){return (function (){
+						actionResult = controller[action].apply(controller, result["parameters"]);
+						actionResult = toAsync(actionResult);
+						actionResult.then(((function(_this){ return (function(){return (function (actionResult){
+							var executedResult = null;
+							var args = {actionName: action, controllerName: controllerName, actionResult: actionResult};
+							if(typeof controller.onActionExecuted  == "function"){
+								executedResult = controller.onActionExecuted(args);
+							}
+							executedResult = toAsync(executedResult);
+							executedResult.then(((function(_this){ return (function(){return (function (){
+								this.processResponse(request, response, actionResult, controller);
+							}).apply(_this,arguments)});})(this))).catch(((function(_this){ return (function(){return (function (error){
+    return this.error(error, request, response);}).apply(_this,arguments)});})(this)));
+						}).apply(_this,arguments)});})(this)))
 						
 						.catch(((function(_this){ return (function(){return (function (error){
     return this.error(error, request, response);}).apply(_this,arguments)});})(this)));
 						
-					}else{
-						this.processResponse(request, response, actionResult, controller);
-					}
+					}).apply(_this,arguments)});})(this)))
+					.catch(((function(_this){ return (function(){return (function (error){
+    return this.error(error, request, response);}).apply(_this,arguments)});})(this)));
 
 				}catch(ex){
 					this.error(ex, request, response);
@@ -1551,6 +1596,11 @@ module.exports. Environment =
 
 
 module.exports['default'] = JSCometWeb;
+
+
+
+
+
 
 
 
