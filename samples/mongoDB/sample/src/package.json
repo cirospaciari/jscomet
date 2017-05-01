@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "main": "./main.js",
+  "dependencies": {
+    "bliss": "^1.0.1",
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.1",
+    "compression": "^1.6.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.2",
+    "express-session": "^1.15.2",
+    "jscomet.core": "^1.0.4",
+    "mongodb": "^2.2.26",
+    "morgan": "^1.8.1",
+    "serve-favicon": "^2.4.2"
+  }
+}
