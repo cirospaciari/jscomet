@@ -261,9 +261,260 @@ class MyClass {
 }
 ```
 
-Decorators (for more information [click here](https://www.npmjs.com/package/jscomet.decorators))
 
-# Decorators
+# ApacheBench MVC Test
+A little benchmark using ApacheBench for simple performance test JSComet, Sails and TotalJS.
+
+Command:
+```sh
+ab -k -l -p payload.json -T application/json -n 100000 -c 500 http://localhost:8080/
+```
+payload.json
+```javascript
+{
+"data": "{'job_id':'c4bb6d130003','container_id':'ab7b85dcac72','status':'Success: process exited with code 0.'}"
+}
+```
+Configurations:
+
+    Intel Core i7-6700HQ @ 2.60GHz
+    16 GB RAM
+    Windows 10 Pro - 64 bits
+
+### Performance Results:
+* ##### JSComet (default) - 7537.64 requests per sec
+* ##### JSComet without cluster - 2233.26 requests per sec  (3.37 times slower)
+* ##### Sails (default) - 1374.82 requests per sec (5.48 times slower)
+* ##### Sails with cluster - 3887.82 requests per sec (1.94 times slower)
+* ##### TotalJS (default) - 2062.01 requests per sec (3.65 times slower)
+* ##### TotalJS with cluster - 3730.94 requests per sec (2.02 times slower)
+
+JSComet in default configuration use cluster and is 5.48 times faster than Sails in default configuration and 3.65 times faster than TotalJS in default configuration.
+
+### Code:
+#### JSComet:
+```javascript
+import { Controller } from 'jscomet.core';
+
+class HomeController extends Controller{
+	
+	public index(){
+		var data = this.body;
+		return this.json(data);
+	}
+}
+export default HomeController;
+```
+#### TotalJS:
+```javascript
+exports.install = function() {
+	F.route('/', view_index, ['post']);
+};
+
+function view_index() {
+	var self = this;
+	self.json(self.body);
+}
+```
+#### Sails:
+```javascript
+module.exports = {
+  /**
+   * CommentController.index()
+   */
+  index: function (req, res) {
+	var data = req.body;
+    return res.json(data);
+  },
+};
+
+```
+### Full Default Settings Results:
+
+#### JSComet
+```sh
+This is ApacheBench, Version 2.3 <$Revision: 1757674 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking localhost (be patient)
+Completed 10000 requests
+Completed 20000 requests
+Completed 30000 requests
+Completed 40000 requests
+Completed 50000 requests
+Completed 60000 requests
+Completed 70000 requests
+Completed 80000 requests
+Completed 90000 requests
+Completed 100000 requests
+Finished 100000 requests
+
+
+Server Software:
+Server Hostname:        localhost
+Server Port:            8080
+
+Document Path:          /home/
+Document Length:        Variable
+
+Concurrency Level:      500
+Time taken for tests:   13.267 seconds
+Complete requests:      100000
+Failed requests:        0
+Keep-Alive requests:    100000
+Total transferred:      37563602 bytes
+Total body sent:        27600000
+HTML transferred:       200000 bytes
+Requests per second:    7537.64 [#/sec] (mean)
+Time per request:       66.334 [ms] (mean)
+Time per request:       0.133 [ms] (mean, across all concurrent requests)
+Transfer rate:          2765.05 [Kbytes/sec] received
+                        2031.63 kb/s sent
+                        4796.68 kb/s total
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   1.6      0     502
+Processing:     3   65  40.7     60    1192
+Waiting:        3   47  40.5     43    1130
+Total:          3   65  40.7     60    1192
+
+Percentage of the requests served within a certain time (ms)
+  50%     60
+  66%     69
+  75%     75
+  80%     79
+  90%     90
+  95%    100
+  98%    114
+  99%    124
+ 100%   1192 (longest request)
+
+```
+#### TotalJS
+```sh
+This is ApacheBench, Version 2.3 <$Revision: 1757674 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking 127.0.0.1 (be patient)
+Completed 10000 requests
+Completed 20000 requests
+Completed 30000 requests
+Completed 40000 requests
+Completed 50000 requests
+Completed 60000 requests
+Completed 70000 requests
+Completed 80000 requests
+Completed 90000 requests
+Completed 100000 requests
+Finished 100000 requests
+
+
+Server Software:
+Server Hostname:        127.0.0.1
+Server Port:            8000
+
+Document Path:          /
+Document Length:        Variable
+
+Concurrency Level:      500
+Time taken for tests:   48.496 seconds
+Complete requests:      100000
+Failed requests:        0
+Keep-Alive requests:    0
+Total transferred:      34400000 bytes
+Total body sent:        27700000
+HTML transferred:       11400000 bytes
+Requests per second:    2062.01 [#/sec] (mean)
+Time per request:       242.482 [ms] (mean)
+Time per request:       0.485 [ms] (mean, across all concurrent requests)
+Transfer rate:          692.71 [Kbytes/sec] received
+                        557.79 kb/s sent
+                        1250.50 kb/s total
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0  11.5      0     537
+Processing:    41  240 221.8    116    1126
+Waiting:        0  191 206.7    100     649
+Total:         41  241 221.9    116    1126
+
+Percentage of the requests served within a certain time (ms)
+  50%    116
+  66%    125
+  75%    137
+  80%    618
+  90%    632
+  95%    638
+  98%    644
+  99%    648
+ 100%   1126 (longest request)
+```
+#### Sails
+```sh
+This is ApacheBench, Version 2.3 <$Revision: 1757674 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking localhost (be patient)
+Completed 10000 requests
+Completed 20000 requests
+Completed 30000 requests
+Completed 40000 requests
+Completed 50000 requests
+Completed 60000 requests
+Completed 70000 requests
+Completed 80000 requests
+Completed 90000 requests
+Completed 100000 requests
+Finished 100000 requests
+
+
+Server Software:
+Server Hostname:        localhost
+Server Port:            1337
+
+Document Path:          /home/
+Document Length:        Variable
+
+Concurrency Level:      500
+Time taken for tests:   72.737 seconds
+Complete requests:      100000
+Failed requests:        0
+Keep-Alive requests:    100000
+Total transferred:      65762092 bytes
+Total body sent:        27600000
+HTML transferred:       11900000 bytes
+Requests per second:    1374.82 [#/sec] (mean)
+Time per request:       363.685 [ms] (mean)
+Time per request:       0.727 [ms] (mean, across all concurrent requests)
+Transfer rate:          882.92 [Kbytes/sec] received
+                        370.56 kb/s sent
+                        1253.47 kb/s total
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   2.2      0     501
+Processing:    14  361  51.5    358    1058
+Waiting:       12  315  52.0    311    1058
+Total:        111  361  51.5    358    1058
+
+Percentage of the requests served within a certain time (ms)
+  50%    358
+  66%    365
+  75%    371
+  80%    377
+  90%    401
+  95%    433
+  98%    451
+  99%    480
+ 100%   1058 (longest request)
+```
+
+
+# Decorators  (for more information [click here](https://www.npmjs.com/package/jscomet.decorators))
 JSComet support decorators to help consume Rest API, cache, log, validation and more features. To use this features you need to install [jscomet.decorators](https://www.npmjs.com/package/jscomet.decorators) package in your project src folder.
 ```sh
 npm install jscomet.decorators
