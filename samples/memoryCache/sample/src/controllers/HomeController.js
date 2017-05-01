@@ -8,7 +8,13 @@ class HomeController extends Controller{
 		this.title = "Home";
 	}
 	
-	@memoryCache(3000) //cache with 3 seconds
+	@memoryCache(3000) //cache with 3 seconds by username
+	private countAHit(username){
+		this.session.hitCounter  = (this.session.hitCounter || 0) + 1;
+		return this.session.hitCounter;
+	}
+	
+	@memoryCache(3000) //cache with 3 seconds globally
 	public index(message){
 		
 		this.session.hitCounter  = (this.session.hitCounter || 0) + 1;
