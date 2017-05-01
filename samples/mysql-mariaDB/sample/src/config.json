@@ -1,0 +1,14 @@
+{
+	"session" : {
+		"name" : "sessionId",
+		"secret" : "3326b169-a39c-9bab-8303-200a70a2876f",
+		"maxAge" : 1800000
+	},
+	"port" : 8080,
+	"publicDir" : "/assets",
+	"connectionString" : {
+		"host" : "localhost",
+		"user" : "root",
+		"database" : "test"
+	}
+}
