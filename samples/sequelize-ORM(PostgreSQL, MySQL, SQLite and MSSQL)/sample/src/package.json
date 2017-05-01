@@ -1,0 +1,18 @@
+{
+  "version": "1.0.0",
+  "main": "./main.js",
+  "dependencies": {
+    "bliss": "^1.0.1",
+    "body-parser": "^1.17.1",
+    "compression": "^1.6.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.2",
+    "express-session": "^1.15.2",
+    "jscomet.core": "^1.0.4",
+    "morgan": "^1.8.1",
+    "mysql": "^2.13.0",
+    "mysql2": "^1.2.0",
+    "sequelize": "^3.30.4",
+    "serve-favicon": "^2.4.2"
+  }
+}

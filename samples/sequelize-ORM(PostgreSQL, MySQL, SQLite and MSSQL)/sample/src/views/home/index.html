@@ -1,0 +1,7 @@
+@!(model, html)
+<h1>Products:</h1>
+
+@for(var i in model){
+	<h3>@(model[i].name)</h3>
+	<h4>@(model[i].value)</h4>
+}
