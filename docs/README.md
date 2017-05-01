@@ -201,7 +201,35 @@ class UserController extends Controller{
 	}
 }
 ```
+##### viewBag: object 
+The viewBag property can be used to pass values between layout and view. This propery defaults is {}. Can be used to made menus, dynamic metatags, scripts, bundles etc.
 
+Example passing value to viewBag:
+```javascript
+class HomeController extends Controller{
+	async login(){
+	     //... login code
+	     
+	    //pass value to viewBag
+        this.viewBag.userName = model.userName;
+        return this.redirect(`/user/${model.slug}`);
+	}
+}
+```
+Using the value passed in view bag in layout/view:
+```html
+@!(title, body, html)
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>@title</title>
+  </head>
+  <body>
+	<input type="hidden" name="userName" value="@html.viewBag.userName" />
+    @body
+  </body>
+</html>
+```
 ### Functions
 
 ##### view(model: object)
