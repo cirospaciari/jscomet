@@ -1,4 +1,4 @@
-GLOBAL.JSComet = require('./libs/jscomet.js')['default'];
+global.JSComet = require('./libs/jscomet.js')['default'];
 
 console.read = function(){	
 	return new Promise((resolve)=>{

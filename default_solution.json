@@ -10,7 +10,7 @@
 	  "translateLetAndConst": true,
 	  "translateFunctions": true,
 	  "translateTypedArrays": true,
-	  "translateAsyncFunctions" : true,
+	  "translateAsyncFunctions" : false,
 	  "translateCodeAfterImport": false
  }
 }
