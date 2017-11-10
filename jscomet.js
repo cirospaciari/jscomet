@@ -652,30 +652,36 @@ function customCommandOrMenu(customCommand, args){
 }
 function printMenu(){
 	console.log("Options:");
-	console.log("\tversion", 								"\t\t\t\t", "show JSComet version");
-	console.log("\tclean", 									"\t\t\t\t\t", "clean all projects");
-	console.log("\tclean %PROJECT_NAME%", 					"\t\t\t", "clean a project");
-	console.log("\tbuild %PROJECT_NAME%", 					"\t\t\t", "build a project");
-	console.log("\tcreate solution", 						"\t\t\t", "create a empty solution file");
-	console.log("\tcreate %PROJECT_TYPE% %PROJECT_NAME%", 	"\t", "create a project");
-	console.log("\tremove %PROJECT_NAME%", 					"\t\t\t", "remove a project");
-	console.log("\trun %PROJECT_NAME%",  					"\t\t\t",  "run a project");
-	console.log("\tpublish %PROJECT_NAME% %OUT_DIRECTORY%", " ", "publish a project to folder");
+	console.log("   version", 								"            ", "show JSComet version");
+	console.log("   clean", 									"               ", "clean all projects");
+	console.log("   clean %PROJECT_NAME%", 					"         ", "clean a project");
+	console.log("   build %PROJECT_NAME%", 					"         ", "build a project");
+	console.log("   create solution", 						"         ", "create a empty solution file");
+	console.log("   create %PROJECT_TYPE% %PROJECT_NAME%", 	"   ", "create a project");
+	console.log("   Default Options:");
+	console.log("     create app MyProject");
+	console.log("     create console MyProject");
+	console.log("     create web MyProject");
+	console.log("     create library MyProject");
 	console.log("");
-	console.log("\treference add %PROJECT_NAME% %REFERENCE_PROJECT_NAME%",		"\t\t", "add project reference");
-	console.log("\treference remove %PROJECT_NAME% %REFERENCE_PROJECT_NAME%",		"\t", "remove project reference");
-	console.log("\tadd %FILE_TEMPLATE% %PROJECT_NAME% %FILE_PATH%",  "\t\t\t",  "add a file");
-	console.log("\t Default Options:");
-	console.log("\t  add html MyProject myHTMLFile");
-	console.log("\t  add xml MyProject myXMLFile");
-	console.log("\t  add js MyProject myJSFile");
-	console.log("\t  add css MyProject myJSFile");
-	console.log("\t  add class MyProject models\\myModelClass");
-	console.log("\t  add class MyProject models\\myModelClass extended myModelBase");
-	console.log("\t  add class MyProject models\\myModelClass singleton");
-	console.log("\t  add controller MyProject myControllerClass");
-	console.log("\t  add view MyProject user\\myView");
-	console.log("\t  add layout MyProject myLayout");
+	console.log("   remove %PROJECT_NAME%", 					"         ", "remove a project");
+	console.log("   run %PROJECT_NAME%",  					"         ",  "run a project");
+	console.log("   publish %PROJECT_NAME% %OUT_DIRECTORY%", " ", "publish a project to folder");
+	console.log("");
+	console.log("   reference add %PROJECT_NAME% %REFERENCE_PROJECT_NAME%",		"      ", "add project reference");
+	console.log("   reference remove %PROJECT_NAME% %REFERENCE_PROJECT_NAME%",		"   ", "remove project reference");
+	console.log("   add %FILE_TEMPLATE% %PROJECT_NAME% %FILE_PATH%",  "         ",  "add a file");
+	console.log("   Default Options:");
+	//console.log("     add html MyProject myHTMLFile");
+	//console.log("     add xml MyProject myXMLFile");
+	//console.log("     add js MyProject myJSFile");
+	//console.log("     add css MyProject myJSFile");
+	console.log("     add class MyProject models\\myModelClass");
+	console.log("     add class MyProject models\\myModelClass extended myModelBase");
+	console.log("     add class MyProject models\\myModelClass singleton");
+	//console.log("     add controller MyProject myControllerClass");
+	//console.log("     add view MyProject user\\myView");
+	//console.log("     add layout MyProject myLayout");
 }
 
 function add(templateName, projectName, fileName){
@@ -747,7 +753,7 @@ function main(){
 	switch(args[1]){
 		case "v":
 		case "version":
-			console.log("v1.0.59");
+			console.log("v1.0.60");
 		break;
 		case "build":
 			build.apply(this, args.slice(2));
