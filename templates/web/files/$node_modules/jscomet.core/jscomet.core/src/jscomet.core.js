@@ -526,7 +526,7 @@ module JSCometWeb{
 	     			   routePartValue != "{}"){
 						routePartValue = routePartValue.substr(1, routePartValue.length-2).trim();
 						parameters[routePartValue] = decodeURIComponent(partValue); 
-					}else if(routePartValue != partValue){
+					}else if(routePartValue != partValue && routePartValue != "*"){
 						success = false;
 						break;
 					}
