@@ -1,4 +1,4 @@
-global.JSComet = require('./libs/jscomet')['default'];
+require('./libs/jscomet');
 import * as cluster from 'cluster';
 import * as os from 'os';
 import * as config from "./config.json";
