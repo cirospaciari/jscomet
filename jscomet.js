@@ -672,8 +672,8 @@ function printMenu(){
 	console.log("   reference remove %PROJECT_NAME% %REFERENCE_PROJECT_NAME%",		"   ", "remove project reference");
 	console.log("   add %FILE_TEMPLATE% %PROJECT_NAME% %FILE_PATH%",  "         ",  "add a file");
 	console.log("   Default Options:");
-	//console.log("     add html MyProject myHTMLFile");
-	//console.log("     add xml MyProject myXMLFile");
+	console.log("     add html MyProject myHTMLFile");
+	console.log("     add xml MyProject myXMLFile");
 	//console.log("     add js MyProject myJSFile");
 	//console.log("     add css MyProject myJSFile");
 	console.log("     add class MyProject models\\myModelClass");
@@ -753,7 +753,7 @@ function main(){
 	switch(args[1]){
 		case "v":
 		case "version":
-			console.log("v1.1.0");
+			console.log("v1.1.2");
 		break;
 		case "build":
 			build.apply(this, args.slice(2));
