@@ -675,7 +675,7 @@ function printMenu(){
 	console.log("     add html MyProject myHTMLFile");
 	console.log("     add xml MyProject myXMLFile");
 	console.log("     add js MyProject myJSFile");
-	console.log("     add css MyProject myJSFile");
+	console.log("     add css MyProject myCSSFile");
 	console.log("     add class MyProject models\\myModelClass");
 	console.log("     add class MyProject models\\myModelClass extended myModelBase");
 	console.log("     add class MyProject models\\myModelClass singleton");
@@ -753,7 +753,7 @@ function main(){
 	switch(args[1]){
 		case "v":
 		case "version":
-			console.log("v1.1.3");
+			console.log("v1.1.4");
 		break;
 		case "build":
 			build.apply(this, args.slice(2));
