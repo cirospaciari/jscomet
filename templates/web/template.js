@@ -197,6 +197,8 @@ function WebTemplate(){
 			
 			ensureDirectoryExistence(libName);
 			copyFileSync(coreName, libName);
+            
+            console.log("Please run 'npm install' command in '"  + project.Source + "' folder to install all dependencies"); 
 			return project;
 		}catch(ex){
 			console.error(ex);

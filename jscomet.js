@@ -750,10 +750,24 @@ function main(){
 	solutionDirectory = path.resolve("./");
 	process.env.JSCOMET_PATH = __dirname;
 	solutionPath = path.join(solutionDirectory, "solution.json");
+    
+    if(!fs.existsSync(solutionPath)) {
+        var temp = path.join(path.resolve("./../"), "solution.json");
+        if(fs.existsSync(temp)) {
+            solutionPath = temp;
+            solutionDirectory = path.resolve("./../");
+        }else {
+            temp = path.join(path.resolve("./../../"), "solution.json");
+            if(fs.existsSync(temp)) {
+                solutionPath = temp;
+                solutionDirectory = path.resolve("./../../");
+            }
+        }
+    }
 	switch(args[1]){
 		case "v":
 		case "version":
-			console.log("v1.1.7");
+			console.log("v1.1.14");
 		break;
 		case "build":
 			build.apply(this, args.slice(2));
