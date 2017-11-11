@@ -34,6 +34,12 @@ Command line:
         build %PROJECT_NAME%                     build a project
         create solution                          create a empty solution file
         create %PROJECT_TYPE% %PROJECT_NAME%     create a project
+	 Default Options:
+	  create app MyProject
+	  create console MyProject
+          create web MyProject
+	  create library MyProject
+	
         remove %PROJECT_NAME%                    remove a project
         run %PROJECT_NAME%                       run a project
         publish %PROJECT_NAME% %OUT_DIRECTORY%   publish a project to folder
@@ -42,6 +48,10 @@ Command line:
         reference remove %PROJECT_NAME% %REFERENCE_PROJECT_NAME%         remove project reference
         add %FILE_TEMPLATE% %PROJECT_NAME% %FILE_PATH%                   add a file
          Default Options:
+	  add html  MyProject myHTMLFile
+	  add xml   MyProject myXMLFile
+	  add js    MyProject myJSFile
+          add css   MyProject myCSSFile
           add class MyProject models\myModelClass
           add class MyProject models\myModelClass extended myModelBase
           add class MyProject models\myModelClass singleton
