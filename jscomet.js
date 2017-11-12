@@ -683,11 +683,11 @@ function printMenu(){
     console.log("     add md MyProject myMarkdownFile");
     console.log("     add txt MyProject myTxtFile");
     console.log("     add sh MyProject myBashFile");
-    console.log("     add gitignore MyProject");
-    console.log("     add gitignore MyProject models\\");
-	console.log("     add class MyProject models\\myModelClass");
-	console.log("     add class MyProject models\\myModelClass extended myModelBase");
-	console.log("     add class MyProject models\\myModelClass singleton");
+    console.log("     add gitignore MyProject /");
+    console.log("     add gitignore MyProject models/");
+	console.log("     add class MyProject models/myModelClass");
+	console.log("     add class MyProject models/myModelClass extended myModelBase");
+	console.log("     add class MyProject models/myModelClass singleton");
 	//console.log("     add controller MyProject myControllerClass");
 	//console.log("     add view MyProject user\\myView");
 	//console.log("     add layout MyProject myLayout");
@@ -776,7 +776,7 @@ function main(){
 	switch(args[1]){
 		case "v":
 		case "version":
-			console.log("v1.1.25");
+			console.log("v1.1.26");
 		break;
 		case "build":
 			build.apply(this, args.slice(2));
