@@ -680,6 +680,11 @@ function printMenu(){
     console.log("     add sass MyProject mySCSSFile");
     console.log("     add less MyProject myLESSFile");
     console.log("     add sql MyProject mySQLFile");
+    console.log("     add md MyProject myMarkdownFile");
+    console.log("     add txt MyProject myTxtFile");
+    console.log("     add sh MyProject myBashFile");
+    console.log("     add gitignore MyProject");
+    console.log("     add gitignore MyProject models\\");
 	console.log("     add class MyProject models\\myModelClass");
 	console.log("     add class MyProject models\\myModelClass extended myModelBase");
 	console.log("     add class MyProject models\\myModelClass singleton");
@@ -771,7 +776,7 @@ function main(){
 	switch(args[1]){
 		case "v":
 		case "version":
-			console.log("v1.1.22");
+			console.log("v1.1.25");
 		break;
 		case "build":
 			build.apply(this, args.slice(2));
