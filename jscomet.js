@@ -78,7 +78,7 @@ function create(projectType, projectName){
 		}
 
 	}else{
-		console.error("you must enter the project type and a project name");
+		console.error("You must enter the project type and a project name");
 		return false;
 	}
 }
@@ -267,7 +267,7 @@ function clean(projectName){
 			project = solution.Projects[i];
 			deleteFolderRecursive(project.Bin);
 		}
-		console.log("solution was clear");
+		console.log("Solution was clear");
 		return true;
 	}
 }
@@ -500,7 +500,7 @@ function run(projectName){
 		}
 
 	}else{
-		console.error("you must enter the project name");
+		console.error("You must enter the project name");
 		return false;
 	}
 }
@@ -580,7 +580,7 @@ function publish(projectName, outDirectory){
 		}
 
 	}else{
-		console.error("you must enter the project name and out directory");
+		console.error("You must enter the project name and out directory");
 		return false;
 	}
 
@@ -675,7 +675,11 @@ function printMenu(){
 	console.log("     add html MyProject myHTMLFile");
 	console.log("     add xml MyProject myXMLFile");
 	console.log("     add js MyProject myJSFile");
-	console.log("     add css MyProject myCSSFile");
+	console.log("     add json MyProject myJSONFile");
+    console.log("     add css MyProject myCSSFile");
+    console.log("     add sass MyProject mySCSSFile");
+    console.log("     add less MyProject myLESSFile");
+    console.log("     add sql MyProject mySQLFile");
 	console.log("     add class MyProject models\\myModelClass");
 	console.log("     add class MyProject models\\myModelClass extended myModelBase");
 	console.log("     add class MyProject models\\myModelClass singleton");
@@ -740,7 +744,7 @@ function add(templateName, projectName, fileName){
 		}
 
 	}else{
-		console.error("you must enter the template, project name and file name");
+		console.error("You must enter the template, project name and file name");
 		return false;
 	}
 }
@@ -767,7 +771,7 @@ function main(){
 	switch(args[1]){
 		case "v":
 		case "version":
-			console.log("v1.1.15");
+			console.log("v1.1.21");
 		break;
 		case "build":
 			build.apply(this, args.slice(2));
