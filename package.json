@@ -10,7 +10,7 @@
   ],
   "license": "MIT",
   "name": "jscomet",
-  "version": "1.1.21",
+  "version": "1.1.22",
   "keywords": [
     "private",
     "console",
@@ -52,7 +52,7 @@
   "cli",
   "framework"
   ],
-  "description": "JSComet is a easy way of creating apps with OO class like ES6/TypeScript/Babel features with truly private vars and functions, type validations, function overloads, all in runtime and can create libraries like browserify and reference this in projects and has an easy to use MVC platform with excellent performance.",
+  "description": "Create apps and a fast MVC website with OO class like ES6/TypeScript/Babel features with truly private vars and functions, type validations, function overloads, all in runtime and create libraries like browserify and reference this in your projects.",
   "bin": {
     "jscomet": "jscomet.js"
   },
