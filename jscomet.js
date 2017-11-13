@@ -688,13 +688,14 @@ function printMenu(){
 	console.log("     add class MyProject models/myModelClass");
 	console.log("     add class MyProject models/myModelClass extended myModelBase");
 	console.log("     add class MyProject models/myModelClass singleton");
+    console.log("     add file-template myFileTemplateName");
 	//console.log("     add controller MyProject myControllerClass");
 	//console.log("     add view MyProject user\\myView");
 	//console.log("     add layout MyProject myLayout");
 }
 
 function add(templateName, projectName, fileName){
-	if(templateName && projectName && fileName){
+	if(templateName && projectName && (fileName || templateName == "file-template")){
 		if(!fs.existsSync(solutionPath)) {
 			console.error("You must create a solution to add a file");
 			return false;
@@ -706,29 +707,37 @@ function add(templateName, projectName, fileName){
 			console.error("Failed to load solution");
 			return false;
 		}
-		if(!fs.existsSync(path.join(solutionDirectory, projectName))) {
-			console.error('Project "' + projectName + '" does not exist');
-			return false;
-		}
-
 		var project = null;
-		for(var i in solution.Projects){
-			if(solution.Projects[i].Name == projectName){
-				project = solution.Projects[i];
-				break;
-			}
-		}
+		if(templateName != "file-template"){
+            if(!fs.existsSync(path.join(solutionDirectory, projectName))) {
+                console.error('Project "' + projectName + '" does not exist');
+                return false;
+            }
 
-		if(!project){
-			console.error('Project "' + projectName + '" does not exist');
-			return false;
-		}
+            
+            for(var i in solution.Projects){
+                if(solution.Projects[i].Name == projectName){
+                    project = solution.Projects[i];
+                    break;
+                }
+            }
+
+            if(!project){
+                console.error('Project "' + projectName + '" does not exist');
+                return false;
+            }
+        }else{
+            project = { Type : "./../" };
+        }
 
 		try{
 
 			var templateFilePath = path.join(process.env.JSCOMET_PATH, "templates", project.Type, "file-templates", templateName, "template.js");
 			if(!fs.existsSync(path.join(templateFilePath))) {
 				templateFilePath = path.join(process.env.JSCOMET_PATH, "file-templates", templateName, "template.js");
+			}
+			if(!fs.existsSync(path.join(templateFilePath))) {
+				templateFilePath = path.join(solutionDirectory, "file-templates", templateName, "template.js");
 			}
 			if(!fs.existsSync(path.join(templateFilePath))) {
 				console.error('Template "' + templateFilePath + '" does not exist');
@@ -776,7 +785,7 @@ function main(){
 	switch(args[1]){
 		case "v":
 		case "version":
-			console.log("v1.1.26");
+			console.log("v1.1.27");
 		break;
 		case "build":
 			build.apply(this, args.slice(2));
