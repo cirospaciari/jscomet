@@ -225,7 +225,7 @@ Using the value passed in view bag in layout/view:
     <title>@title</title>
   </head>
   <body>
-	<input type="hidden" name="userName" value="@html.viewBag.userName" />
+	<input type="hidden" name="userName" value="@(html.viewBag.userName)" />
     @body
   </body>
 </html>
@@ -370,7 +370,7 @@ This function is like view function but instead return ActionResult returns the 
 This function is like render function but instead return entire html, return view without layout html, viewName is optional. This function can be used in view html to render views and turn the page more modular.
 ```html
 @!(model, html)
-<h1>@model.message</h1>
+<h1>@(model.message)</h1>
 @for(var i in model.persons){
     <p>@html.partial('person', model.persons[i])</p>
 }
@@ -403,7 +403,7 @@ Rendering menu passed in view bag in layout/view:
   <body>
    <ul>
 	@for(var i in html.viewBag.menu){
-	    <li><a href="@html.viewBag.menu[i].link">@html.viewBag.menu[i].text</a></li>
+	    <li><a href="@(html.viewBag.menu[i].link)">@(html.viewBag.menu[i].text)</a></li>
 	}
 	</ul>
     @body
