@@ -274,7 +274,7 @@ class MyClass {
 
 
 # ApacheBench MVC Test
-A little benchmark using ApacheBench for simple performance test JSComet, Sails and TotalJS.
+A little benchmark using ApacheBench for simple performance test JSComet and Sails.
 
 Command:
 ```sh
@@ -297,10 +297,8 @@ Configurations:
 * ##### JSComet without cluster - 2233.26 requests per sec  (3.37 times slower)
 * ##### Sails (default) - 1374.82 requests per sec (5.48 times slower)
 * ##### Sails with cluster - 3887.82 requests per sec (1.94 times slower)
-* ##### TotalJS (default) - 2062.01 requests per sec (3.65 times slower)
-* ##### TotalJS with cluster - 3730.94 requests per sec (2.02 times slower)
 
-JSComet in default configuration use cluster and is 5.48 times faster than Sails in default configuration and 3.65 times faster than TotalJS in default configuration.
+JSComet in default configuration use cluster and is 5.48 times faster than Sails in default configuration.
 
 ### Code:
 #### JSComet:
@@ -316,17 +314,7 @@ class HomeController extends Controller{
 }
 export default HomeController;
 ```
-#### TotalJS:
-```javascript
-exports.install = function() {
-	F.route('/', view_index, ['post']);
-};
 
-function view_index() {
-	var self = this;
-	self.json(self.body);
-}
-```
 #### Sails:
 ```javascript
 module.exports = {
@@ -402,66 +390,6 @@ Percentage of the requests served within a certain time (ms)
   99%    124
  100%   1192 (longest request)
 
-```
-#### TotalJS
-```sh
-This is ApacheBench, Version 2.3 <$Revision: 1757674 $>
-Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
-Licensed to The Apache Software Foundation, http://www.apache.org/
-
-Benchmarking 127.0.0.1 (be patient)
-Completed 10000 requests
-Completed 20000 requests
-Completed 30000 requests
-Completed 40000 requests
-Completed 50000 requests
-Completed 60000 requests
-Completed 70000 requests
-Completed 80000 requests
-Completed 90000 requests
-Completed 100000 requests
-Finished 100000 requests
-
-
-Server Software:
-Server Hostname:        127.0.0.1
-Server Port:            8000
-
-Document Path:          /
-Document Length:        Variable
-
-Concurrency Level:      500
-Time taken for tests:   48.496 seconds
-Complete requests:      100000
-Failed requests:        0
-Keep-Alive requests:    0
-Total transferred:      34400000 bytes
-Total body sent:        27700000
-HTML transferred:       11400000 bytes
-Requests per second:    2062.01 [#/sec] (mean)
-Time per request:       242.482 [ms] (mean)
-Time per request:       0.485 [ms] (mean, across all concurrent requests)
-Transfer rate:          692.71 [Kbytes/sec] received
-                        557.79 kb/s sent
-                        1250.50 kb/s total
-
-Connection Times (ms)
-              min  mean[+/-sd] median   max
-Connect:        0    0  11.5      0     537
-Processing:    41  240 221.8    116    1126
-Waiting:        0  191 206.7    100     649
-Total:         41  241 221.9    116    1126
-
-Percentage of the requests served within a certain time (ms)
-  50%    116
-  66%    125
-  75%    137
-  80%    618
-  90%    632
-  95%    638
-  98%    644
-  99%    648
- 100%   1126 (longest request)
 ```
 #### Sails
 ```sh
