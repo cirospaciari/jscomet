@@ -670,7 +670,7 @@ function printMenu(){
 	console.log("");
 	console.log("   reference add %PROJECT_NAME% %REFERENCE_PROJECT_NAME%",		"      ", "add project reference");
 	console.log("   reference remove %PROJECT_NAME% %REFERENCE_PROJECT_NAME%",		"   ", "remove project reference");
-	console.log("   add %FILE_TEMPLATE% %PROJECT_NAME% %FILE_PATH%",  "         ",  "add a file");
+	console.log("\n   add %FILE_TEMPLATE% %PROJECT_NAME% %FILE_PATH%",  "         ",  "add a file");
 	console.log("   Default Options:");
 	console.log("     add html MyProject myHTMLFile");
 	console.log("     add xml MyProject myXMLFile");
@@ -689,9 +689,11 @@ function printMenu(){
 	console.log("     add class MyProject models/myModelClass extended myModelBase");
 	console.log("     add class MyProject models/myModelClass singleton");
     console.log("     add file-template myFileTemplateName");
-	//console.log("     add controller MyProject myControllerClass");
-	//console.log("     add view MyProject user\\myView");
-	//console.log("     add layout MyProject myLayout");
+	
+    console.log("\n   For web projects:")
+    console.log("     add controller MyProject myControllerClass");
+	console.log("     add view MyProject user\\myView");
+	console.log("     add layout MyProject myLayout");
 }
 
 function add(templateName, projectName, fileName){
@@ -785,7 +787,7 @@ function main(){
 	switch(args[1]){
 		case "v":
 		case "version":
-			console.log("v1.1.29");
+			console.log("v1.1.31");
 		break;
 		case "build":
 			build.apply(this, args.slice(2));
