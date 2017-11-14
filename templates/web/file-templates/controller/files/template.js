@@ -7,7 +7,7 @@ class {ClassName} extends Controller{
 		this.title = "{ClassName}";
 	}
 	
-	public index(){
+	index(){
 		return this.view();
 	}
 }

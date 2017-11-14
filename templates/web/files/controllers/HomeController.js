@@ -7,11 +7,11 @@ class HomeController extends Controller{
 		this.title = "Home";
 	}
 	
-	public index(){
+	index(){
 		return this.index('Hello World!!!');
 	}
 
-	public index(message){
+	index(message){
 		var model = { message: message };
 		return this.view(model);
 	}
