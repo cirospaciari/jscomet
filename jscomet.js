@@ -480,12 +480,13 @@ function run(projectName){
 
 			var template = require(path.join(process.env.JSCOMET_PATH, "templates", project.Type, "template.js"))["default"];
 			var args = [solutionPath, projectName];
-			for(var i = 2; i < arguments.length; i++){
+            
+			for(var i = 1; i < arguments.length; i++){
 				args.push(arguments[i]);
 			}
-
+            
 			getAsync(build(projectName)).then(function(success){
-				if(success){
+				if(success){              
 					var promise = getAsync(template.run.apply(template, args));
 				}
 			});
@@ -787,7 +788,7 @@ function main(){
 	switch(args[1]){
 		case "v":
 		case "version":
-			console.log("v1.1.35");
+			console.log("v1.1.37");
 		break;
 		case "build":
 			build.apply(this, args.slice(2));

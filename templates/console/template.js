@@ -126,7 +126,7 @@ function AppTemplate() {
 	}
 
 	this.run = function (solutionPath, projectName) {
-
+        var extras = Array.prototype.slice.call((arguments),2); 
 		var solution = require(solutionPath);
 		var project = null;
 		for (var i in solution.Projects) {
@@ -145,9 +145,9 @@ function AppTemplate() {
 
 		//custom run
 		var childProcess = require('child_process');
-
+        extras.unshift(mainFile);
 		console.log(project.Name, "started\n");
-		var node = childProcess.spawn('node', [mainFile], {
+		var node = childProcess.spawn('node', extras, {
 				stdio : [0, 1, 2]
 			});
 
