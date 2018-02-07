@@ -54,6 +54,8 @@ function AppTemplate() {
 				return false;
 			}
 			console.log("Building: " + project.Name + "...");
+            
+            
 			var dirname = path.dirname(solutionPath);
 			project = JSON.parse(JSON.stringify(project));
 			project.Source = path.resolve(dirname, project.Source);
