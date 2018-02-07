@@ -471,7 +471,7 @@ var JSComet = function () {
             }
             var especialFloat = especialFloatValidation[type];
             if (especialFloat) {
-                validation += "((typeof " + parameterName + " != 'number') ||\n";
+                validation += "((typeof " + parameterName + " != 'number')\n";
                 validation += "|| isNaN(parseFloat(" + parameterName + "))";
                 validation += " || " + parameterName + " > " + especialFloat.max + "\n";
                 validation += " || " + parameterName + " < " + especialFloat.min + ")";
