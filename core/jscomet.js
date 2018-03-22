@@ -471,7 +471,7 @@ var JSComet = function () {
             }
             var especialFloat = especialFloatValidation[type];
             if (especialFloat) {
-                validation += "((typeof " + parameterName + " != 'number') ||\n";
+                validation += "((typeof " + parameterName + " != 'number')\n";
                 validation += "|| isNaN(parseFloat(" + parameterName + "))";
                 validation += " || " + parameterName + " > " + especialFloat.max + "\n";
                 validation += " || " + parameterName + " < " + especialFloat.min + ")";
@@ -525,8 +525,8 @@ var JSComet = function () {
             var especialFloat = especialFloatValidation[type];
             if (especialFloat) {
                 if (isReturn)
-                    return "the " + name + " must be a floating point between " + especialInt.min + " and " + especialInt.max;
-                return "the " + name + " '" + parameterName + "' must be a floating point between " + especialInt.min + " and " + especialInt.max;
+                    return "the " + name + " must be a floating point between " + especialFloat.min + " and " + especialFloat.max;
+                return "the " + name + " '" + parameterName + "' must be a floating point between " + especialFloat.min + " and " + especialFloat.max;
             }
             if (isReturn)
                 return "the " + name + " must be '" + type + "'";
