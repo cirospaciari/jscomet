@@ -4,5 +4,6 @@
    "Bin": "{ProjectName}/bin",
    "IgnorePathsOnTranslate": ["libs", "node_modules"],
    "Type": "library",
-   "MainFile": "{ProjectName}.js"
+   "MainFile": "{ProjectName}.js",
+   "IncludeMinimalFramework": false
 }

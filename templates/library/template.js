@@ -61,6 +61,10 @@ function LibraryTemplate(){
 			
 			var files = glob.sync(path.join(project.Source, "/**/**"), { "ignore": ignoreList });
 			var libText = "var z____memoryImport = z____memoryImport || {};\n";
+			if(project.IncludeMinimalFramework){
+				var minimalFrameworkPath = path.join(process.env.JSCOMET_PATH, "core/jscomet.withouttranslate.min.js");
+				libText += fs.readFileSync(minimalFrameworkPath) + "\n";
+			}
 			//libText += "var	JSComet = JSComet || require('./libs/jscomet.js')['default'];\n";
 			var mainText = "";
 			var options = {};

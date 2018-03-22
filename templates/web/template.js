@@ -190,9 +190,8 @@ function WebTemplate(){
 					copyFileSync(files[i], templateFile);
 				}
 			}
-		
 			
-			var coreName = path.join(process.env.JSCOMET_PATH, "core/jscomet.js");
+			var coreName = path.join(process.env.JSCOMET_PATH, "core/jscomet.withouttranslate.min.js");
 			var libName = path.join(dirname, project.Source, "libs/jscomet.js");
 			
 			ensureDirectoryExistence(libName);

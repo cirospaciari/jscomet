@@ -176,7 +176,7 @@ function AppTemplate(){
 			
 			fs.writeFileSync(mainName, "require('./libs/jscomet.js');\n", { flags: 'w' }, 'utf8');
 			
-			var coreName = path.join(process.env.JSCOMET_PATH, "core/jscomet.js");
+			var coreName = path.join(process.env.JSCOMET_PATH, "core/jscomet.withouttranslate.min.js");
 			var libName = path.join(dirname, project.Source, "libs/jscomet.js");
 			
 			ensureDirectoryExistence(libName);
