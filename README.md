@@ -64,6 +64,7 @@ Command line:
           add class MyProject models\myModelClass extended myModelBase
           add class MyProject models\myModelClass singleton
        
+A new version with more features and MVVM comming soon.
 
 ### For documentation and more details [click here](https://github.com/cirospaciari/jscomet/tree/master/docs)
 ### For examples [click here](https://github.com/cirospaciari/jscomet/tree/master/samples)
