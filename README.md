@@ -2,6 +2,13 @@
 
 [![NPM version](https://img.shields.io/npm/v/jscomet.svg)](https://img.shields.io/npm/v/jscomet.svg) [![NPM License](https://img.shields.io/npm/l/jscomet.svg)](https://img.shields.io/npm/l/jscomet.svg) [![Downloads](https://img.shields.io/npm/dt/jscomet.svg?maxAge=43200)](https://img.shields.io/npm/dt/jscomet.svg?maxAge=60) [![ISSUES](https://img.shields.io/github/issues/cirospaciari/jscomet.svg?maxAge=60)](https://img.shields.io/github/issues/cirospaciari/jscomet.svg?maxAge=60)
 
+Support me for future versions:
+
+[![BMC](https://cdn.buymeacoffee.com/buttons/default-orange.png)](https://www.buymeacoffee.com/i2yBGw7)
+
+[![PAGSEGURO](https://stc.pagseguro.uol.com.br/public/img/botoes/doacoes/209x48-doar-assina.gif)](https://pag.ae/7VxyJphKt)
+
+
 JSComet is a easy way of creating apps with OO class like ES6/TypeScript/Babel features with truly private vars and functions, type validations, function overloads, all in runtime and can create libraries like browserify and reference this in projects.
 JSComet has an easy to use MVC platform with excellent performance for your web projects please check the benchmarks.
 
