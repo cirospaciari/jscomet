@@ -10,7 +10,7 @@
     "express": "^4.15.2",
     "express-session": "^1.15.2",
     "jscomet.core": "^1.0.4",
-    "mongodb": "^2.2.26",
+    "mongodb": "^3.6.1",
     "morgan": "^1.8.1",
     "serve-favicon": "^2.4.2"
   }
